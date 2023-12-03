@@ -7,7 +7,7 @@ The /data folder is persistent.
 # Quickstart
 
 ```bash
-docker run -dt --name mycert -e y_http_share_cert=yes palw3ey/ye3cert
+docker run -dt --name mycert -e Y_HTTP_SHARE_CERT=yes palw3ey/ye3cert
 docker exec -it mycert sh --login -c "mgmt"
 ```
 
