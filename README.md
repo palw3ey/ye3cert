@@ -23,7 +23,7 @@ These are the env variables and their default values.
 | :- |:- |:- |
 |TZ | text | Europe/Paris |
 |Y_LANGUAGE | text | fr_FR |
-|Y_IP | IP address | NULL |
+|Y_IP | IP address | |
 |Y_HTTP | yes/no | yes |
 |Y_HTTP_SHARE_CERT | yes/no | no |
 |Y_HTTP_SHARE_FOLDER | folder path | /data/ssl/certs |
