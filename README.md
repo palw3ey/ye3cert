@@ -22,7 +22,7 @@ These are the env variables and their default values.
 | variables | format | default |
 | :- |:- |:- |
 |TZ | text | Europe/Paris |
-|Y_LANGUAGE | test | fr_FR |
+|Y_LANGUAGE | text | fr_FR |
 |Y_IP | IP address | NULL |
 |Y_HTTP | yes/no | yes |
 |Y_HTTP_SHARE_CERT | yes/no | no |
