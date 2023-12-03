@@ -43,7 +43,7 @@ These are the env variables and their default values.
 |Y_LOCALITY_NAME | text | Paris |
 |Y_ORGANIZATIONAL_UNIT_NAME | text | Web |
 |Y_KEY_USAGE | text | "nonRepudiation, digitalSignature, keyEncipherment" |
-|Y_EXTENDED_KEYUSAGE | text | "serverAuth, clientAuth" |
+|Y_EXTENDED_KEY_USAGE | text | "serverAuth, clientAuth" |
 |Y_CA_PASS | password | ca |
 
 # Build
