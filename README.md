@@ -4,7 +4,7 @@ A docker certificate authority server based on Openssl and Alpine, for creating 
 
 The /data folder is persistent.
 
-# Quickstart
+# Simple usage
 
 ```bash
 docker run -dt --name mycert -e Y_HTTP_SHARE_CERT=yes palw3ey/ye3cert
@@ -57,6 +57,27 @@ cd ye3cert
 docker build --no-cache --network=host -t ye3cert .
 docker run -dt --name my_customized_cert ye3cert
 ```
+
+# Documentation
+
+[OpenSSL man page](https://linux.die.net/man/1/openssl)  
+[lighttpd man page](https://linux.die.net/man/8/lighttpd)
+
+# Version
+
+| name | version |
+| :- |:- |
+|ye3tftp | 1.0.0 |
+|openssl | 3.1.4 |
+|lighttpd | 1.4.73 |
+|alpine | 3.18.4 |
+
+# ToDo
+
+- need to document env variables
+- add more translation files in i18n folder. Contribute ! Send me your translations by mail ;)
+
+Don't hesitate to send me your contributions, issues, improvements on github or by mail.
 
 # License
 
