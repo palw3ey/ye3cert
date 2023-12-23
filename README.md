@@ -11,6 +11,51 @@ docker run -dt --name mycert -e Y_HTTP_SHARE_CERT=yes palw3ey/ye3cert
 docker exec -it mycert sh --login -c "mgmt"
 ```
 
+# Test
+```bash
+# get container IP :
+docker inspect --format='{{.NetworkSettings.IPAddress}}' mycert
+
+# Open a web browser and paste the IP address,
+# the certificate files will be displayed, and available for download.
+```
+
+# HOWTOs
+
+- Browse the ssl folder from the host :
+```bash
+ls $(docker inspect mycert -f '{{range .Mounts}}{{ if eq .Type "volume" }}{{println .Source }}{{ end }}{{end}}')/ssl
+```
+
+- Add a client certificate, with a filename prefix : tux2
+```bash
+# connect to the container
+docker exec -it mycert sh --login -c sh
+
+# use the management script
+mgmt --action=add \
+  --prefix=tux2 \
+  --cn=pc2.test.lan \
+  --password=1234 \
+  --revo=yes \
+  --san=DNS.1:pc2.test.lan,IP.1:12.168.9.32,IP.2:10.2.9.32
+
+# To exit, type : exit, or use the escape sequence : Ctrl+P and next Ctrl+Q
+```
+
+- Use your host Let's Encrypt certificates for HTTPS on 8443 port
+```bash
+docker run -dt --name mycert \
+  -e TZ=America/Montreal \
+  -e Y_HTTP_SHARE_CERT=yes \
+  -p 8443:443 \
+  -v /etc/letsencrypt/live/{YOUR_DOMAIN}/fullchain.pem:/data/fullchain.pem \
+  -v /etc/letsencrypt/live/{YOUR_DOMAIN}/privkey.pem:/data/privkey.pem \
+  palw3ey/ye3cert
+```
+
+
+
 # GNS3
 
 To run through GNS3, download and import the appliance : [ye3cert.gns3a](https://raw.githubusercontent.com/palw3ey/ye3cert/master/ye3cert.gns3a)
@@ -19,32 +64,32 @@ To run through GNS3, download and import the appliance : [ye3cert.gns3a](https:/
 
 These are the env variables and their default values.  
 
-| variables | format | default |
-| :- |:- |:- |
-|TZ | text | Europe/Paris |
-|Y_LANGUAGE | text | fr_FR |
-|Y_IP | IP address | |
-|Y_HTTP | yes/no | yes |
-|Y_HTTP_SHARE_CERT | yes/no | no |
-|Y_HTTP_SHARE_FOLDER | folder path | /data/ssl/certs |
-|Y_HTTP_PORT | port number | 80 |
-|Y_HTTP_PORT_SECURE | port number | 443 |
-|Y_CRL | yes/no | yes |
-|Y_CRL_FREQUENCY | number of second | 15 |
-|Y_OCSP | yes/no | yes |
-|Y_OCSP_PORT | port number | 8080 |
-|Y_DAYS | number | 3650 |
-|Y_DNS | url address | ye3cert.test.lan |
-|Y_CN | text | ye3cert |
-|Y_ORGANIZATION_NAME | text | Test |
-|Y_EMAIL_ADDRESS | email address | webmaster@test.lan |
-|Y_COUNTRY_NAME | Two letter country code | FR |
-|Y_STATE_OR_PROVINCE_NAME | text | Ile-de-France |
-|Y_LOCALITY_NAME | text | Paris |
-|Y_ORGANIZATIONAL_UNIT_NAME | text | Web |
-|Y_KEY_USAGE | text | "nonRepudiation, digitalSignature, keyEncipherment" |
-|Y_EXTENDED_KEY_USAGE | text | "serverAuth, clientAuth" |
-|Y_CA_PASS | password | ca |
+| variables | format | default | description |
+| :- |:- |:- |:- |
+|TZ | text | Europe/Paris | Time zone |
+|Y_LANGUAGE | text | fr_FR | Language. The list is in the folder /i18n/ |
+|Y_IP | IP address | | Server IP address |
+|Y_HTTP | yes/no | yes | yes, enable http/https server |
+|Y_HTTP_SHARE_CERT | yes/no | no | yes, to show certs files in the http server directory listing |
+|Y_HTTP_SHARE_FOLDER | folder path | /data/ssl/certs | http server directory listing path |
+|Y_HTTP_PORT | port number | 80 | http port |
+|Y_HTTP_PORT_SECURE | port number | 443 | https port |
+|Y_CRL | yes/no | yes | yes, to enable CRL update service |
+|Y_CRL_FREQUENCY | number of second | 15 | CRL update frequency |
+|Y_OCSP | yes/no | yes | yes, to enable OCSP service |
+|Y_OCSP_PORT | port number | 8080 | OCSP port |
+|Y_DAYS | number | 3650 | How long to certify for |
+|Y_DNS | url address | ye3cert.test.lan | The server address |
+|Y_CN | text | ye3cert | The server common name |
+|Y_ORGANIZATION_NAME | text | Test | The server Organization Name |
+|Y_EMAIL_ADDRESS | email address | webmaster@test.lan | The server email address |
+|Y_COUNTRY_NAME | Two letter country code | FR | The server country name, 2 letter code |
+|Y_STATE_OR_PROVINCE_NAME | text | Ile-de-France | The server state or province name |
+|Y_LOCALITY_NAME | text | Paris | The server locality name |
+|Y_ORGANIZATIONAL_UNIT_NAME | text | Web | The server organizational unit name |
+|Y_KEY_USAGE | text | "nonRepudiation, digitalSignature, keyEncipherment" | Key usage for a client certificate |
+|Y_EXTENDED_KEY_USAGE | text | "serverAuth, clientAuth" | Extended key usage for a client certificate |
+|Y_CA_PASS | password | ca | The password to use for the ca key |
 
 # Build
 
@@ -74,7 +119,7 @@ docker run -dt --name my_customized_cert ye3cert
 
 # ToDo
 
-- need to document env variables
+- ~~need to document env variables~~ (2023-12-23)
 - add more translation files in i18n folder. Contribute ! Send me your translations by mail ;)
 
 Don't hesitate to send me your contributions, issues, improvements on github or by mail.
