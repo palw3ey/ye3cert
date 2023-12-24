@@ -72,7 +72,7 @@ These are the env variables and their default values.
 
 | variables | format | default | description |
 | :- |:- |:- |:- |
-|TZ | text | Europe/Paris | Time zone |
+|TZ | text | Europe/Paris | Time zone. The list is in the folder /usr/share/zoneinfo |
 |Y_LANGUAGE | text | fr_FR | Language. The list is in the folder /i18n/ |
 |Y_IP | IP address | | Server IP address |
 |Y_HTTP | yes/no | yes | yes, enable http/https server |
