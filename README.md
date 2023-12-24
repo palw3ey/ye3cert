@@ -31,6 +31,7 @@ docker exec -it mycert sh --login -c "mgmt --action=pem --prefix=tux1"
 
 - Browse the ssl folder from the host :
 ```bash
+# sudo is required
 ls $(docker inspect mycert -f '{{range .Mounts}}{{ if eq .Type "volume" }}{{println .Source }}{{ end }}{{end}}')/ssl
 ```
 
