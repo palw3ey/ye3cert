@@ -8,14 +8,14 @@ The /data folder is persistent.
 
 ```bash
 docker run -dt --name mycert -e Y_HTTP_SHARE_CERT=yes palw3ey/ye3cert
+
+# To show the management actions :
 docker exec -it mycert sh --login -c "mgmt"
 ```
 
 # Test
 ```bash
 # get container IP :
-docker inspect mycert --format='{{.NetworkSettings.IPAddress}}'
-# or
 docker exec -it mycert sh --login -c "hostname -i"
 
 # Open a web browser and paste the IP address,
@@ -23,6 +23,11 @@ docker exec -it mycert sh --login -c "hostname -i"
 ```
 
 # HOWTOs
+
+- Show a base64 certificate in the terminal, eg: tux1 :
+```bash
+docker exec -it mycert sh --login -c "mgmt --action=pem --prefix=tux1"
+```
 
 - Browse the ssl folder from the host :
 ```bash
@@ -55,8 +60,6 @@ docker run -dt --name mycert \
   -v /etc/letsencrypt/live/{YOUR_DOMAIN}/privkey.pem:/data/privkey.pem \
   palw3ey/ye3cert
 ```
-
-
 
 # GNS3
 
