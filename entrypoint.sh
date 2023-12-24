@@ -30,13 +30,13 @@ f_log "$i_update_timezone"
 if [ -f "/data/ssl/cacert.pem" ]; then
 
 	f_log "$i_start HTTP"
-	if [ $y_http == "yes" ]; then /mgmt.sh --action=restart_http; fi
+	if [[ $Y_HTTP == "yes" ]]; then /mgmt.sh --action=restart_http; fi
 	
 	f_log "$i_start CRL"
-	if [ $y_crl == "yes" ]; then /mgmt.sh --action=restart_crl; fi
+	if [[ $Y_CRL == "yes" ]]; then /mgmt.sh --action=restart_crl; fi
 	
 	f_log "$i_start OCSP"
-	if [ $y_ocsp == "yes" ]; then /mgmt.sh --action=restart_ocsp; fi
+	if [[ $Y_OCSP == "yes" ]]; then /mgmt.sh --action=restart_ocsp; fi
 	
 else
 	
