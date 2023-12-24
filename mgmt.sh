@@ -112,13 +112,13 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 	ping -c 3 $(route -n | grep 'UG[ \t]' | awk '{print $2}')
 
 	# start http server
-	if [ $Y_HTTP == "yes" ]; then f_start_http; fi
+	if [[ $Y_HTTP == "yes" ]]; then f_start_http; fi
 	
 	# start crl update service
-	if [ $Y_CRL == "yes" ]; then f_start_crl; fi
+	if [[ $Y_CRL == "yes" ]]; then f_start_crl; fi
 	
 	# start ocsp service
-	if [ $Y_OCSP == "yes" ]; then f_start_ocsp; fi
+	if [[ $Y_OCSP == "yes" ]]; then f_start_ocsp; fi
 	
 	echo "$i_finished"
 
@@ -139,7 +139,7 @@ f_start_http() {
 	sed -i "s|.*include \"mime-types.conf\".*|include \"/etc/lighttpd/mime-types.conf\"|" /data/lighttpd.conf
 	
 	# set document root
-	if [ $Y_HTTP_SHARE_CERT == "yes" ]; then
+	if [[ $Y_HTTP_SHARE_CERT == "yes" ]]; then
 		sed -i "s|.*server.document-root.*|server.document-root = \"$Y_HTTP_SHARE_FOLDER\"|" /data/lighttpd.conf
 	fi
 	
@@ -213,7 +213,7 @@ f_add() {
 	password=$3
 	
 	# extension
-	if [ "$4" == "no" ]; then
+	if [[ "$4" == "no" ]]; then
 		usr_cert='usr_cert'
 	else
 		usr_cert='usr_cert_with_revocation'
@@ -319,7 +319,7 @@ f_shutdown(){
 }
 
 f_arg() {
-	echo -e "$(hostname -i)\n$i_HELP"	
+	echo -e "$(hostname -i)\n$i_HELP"
 }
 
 while [ $# -gt 0 ]; do
