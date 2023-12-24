@@ -14,7 +14,9 @@ docker exec -it mycert sh --login -c "mgmt"
 # Test
 ```bash
 # get container IP :
-docker inspect --format='{{.NetworkSettings.IPAddress}}' mycert
+docker inspect mycert --format='{{.NetworkSettings.IPAddress}}'
+# or
+docker exec -it mycert sh --login -c "hostname -i"
 
 # Open a web browser and paste the IP address,
 # the certificate files will be displayed, and available for download.
@@ -40,7 +42,7 @@ mgmt --action=add \
   --revo=yes \
   --san=DNS.1:pc2.test.lan,IP.1:12.168.9.32,IP.2:10.2.9.32
 
-# To exit, type : exit, or use the escape sequence : Ctrl+P and next Ctrl+Q
+# To leave, type : exit, or use the escape sequence : Ctrl+P and next Ctrl+Q
 ```
 
 - Use your host Let's Encrypt certificates for HTTPS on 8443 port
