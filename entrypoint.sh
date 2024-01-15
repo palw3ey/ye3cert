@@ -1,14 +1,19 @@
 #!/bin/sh
 
-# LABEL name="ye3cert" version="1.0.0" author="palw3ey" maintainer="palw3ey" email="palw3ey@gmail.com" website="https://github.com/palw3ey/ye3cert" license="MIT" create="20231203" update="20231203"
+# LABEL name="ye3cert" version="1.0.0" author="palw3ey" maintainer="palw3ey" email="palw3ey@gmail.com" website="https://github.com/palw3ey/ye3cert" license="MIT" create="20231203" update="20240115"
 
 # Entrypoint for docker
+
+# ============ [ global variable ] ============
+
+# script name
+vg_name=ye3cert
 
 # ============ [ function ] ============
 
 # echo information for docker logs
 function f_log(){
-  echo -e "$(date '+%Y-%m-%d %H:%M:%S') $(hostname) ye3radius: $@"
+  echo -e "$(date '+%Y-%m-%d %H:%M:%S') $(hostname) $vg_name: $@"
 }
 
 # ============ [ internationalisation ] ============
