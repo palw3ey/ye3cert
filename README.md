@@ -97,6 +97,20 @@ These are the env variables and their default values.
 |Y_EXTENDED_KEY_USAGE | text | "serverAuth, clientAuth" | Extended key usage for a client certificate |
 |Y_CA_PASS | password | ca | The password to use for the ca key |
 
+# Compatibility
+
+The docker image was compiled to work on these CPU architectures :
+
+- linux/386
+- linux/amd64
+- linux/arm/v6
+- linux/arm/v7
+- linux/arm64
+- linux/ppc64le
+- linux/s390x
+
+Work on most computers including Raspberry Pi
+
 # Build
 
 To customize and create your own images.
