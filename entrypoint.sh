@@ -29,26 +29,30 @@ fi
 # ============ [ config ] ============
 
 f_log "$i_update_timezone"
-/mgmt.sh --action=timezone --tz=$TZ
+/yee.sh --action=timezone --tz=$TZ
 
 # check ca file presence
 if [ -f "/data/ssl/cacert.pem" ]; then
 
 	f_log "$i_start HTTP"
-	if [[ $Y_HTTP == "yes" ]]; then /mgmt.sh --action=restart_http; fi
+	if [[ $Y_HTTP == "yes" ]]; then /yee.sh --action=restart_http; fi
 	
 	f_log "$i_start CRL"
-	if [[ $Y_CRL == "yes" ]]; then /mgmt.sh --action=restart_crl; fi
+	if [[ $Y_CRL == "yes" ]]; then /yee.sh --action=restart_crl; fi
 	
 	f_log "$i_start OCSP"
-	if [[ $Y_OCSP == "yes" ]]; then /mgmt.sh --action=restart_ocsp; fi
+	if [[ $Y_OCSP == "yes" ]]; then /yee.sh --action=restart_ocsp; fi
 	
 else
 	
 	f_log "$i_run_initial_setup"
-	/mgmt.sh --action=init
+	/yee.sh --action=init
 
 fi
+
+# create/update symbolic link for bypass_container_env.sh
+ 
+ln -sfn /data/bypass_container_env.sh /etc/profile.d/bypass_container_env.sh
 
 f_log ":: $i_ready ::"
 
