@@ -2,8 +2,8 @@ FROM alpine:latest
 
 LABEL org.opencontainers.image.title="ye3cert"
 LABEL org.opencontainers.image.version="1.0.2"
-LABEL org.opencontainers.image.created="2024-10-07T15:00:00-03:00"
-LABEL org.opencontainers.image.revision="20241015"
+LABEL org.opencontainers.image.created="2024-10-17T15:00:00-03:00"
+LABEL org.opencontainers.image.revision="20241017"
 LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.authors="palw3ey"
 LABEL org.opencontainers.image.vendor="palw3ey"
@@ -29,7 +29,7 @@ ENV TZ=Europe/Paris \
 	# http
 	Y_HTTP=yes \
 	Y_HTTP_SHARE_CERT=no \
-	Y_HTTP_SHARE_FOLDER=/data/ssl/certs \
+	Y_HTTP_SHARE_FOLDER=/data/ssl/www \
 	Y_HTTP_PORT=80 \
 	Y_HTTP_PORT_SECURE=443
 	\

@@ -1,8 +1,6 @@
 #!/bin/sh
 
-# LABEL name="ye3cert" version="1.0.0" author="palw3ey" maintainer="palw3ey" email="palw3ey@gmail.com" website="https://github.com/palw3ey/ye3cert" license="MIT" create="20231203" update="20240115"
-
-# Entrypoint for docker
+# Entrypoint for container
 
 # ============ [ global variable ] ============
 

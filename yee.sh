@@ -60,6 +60,7 @@ f_init() {
 	mkdir /data/ssl/csr > /dev/null 2>&1
 	mkdir /data/ssl/certs > /dev/null 2>&1
 	mkdir /data/ssl/newcerts > /dev/null 2>&1
+	mkdir /data/ssl/www > /dev/null 2>&1
 	touch /data/ssl/index.txt
 	sh -c "echo 10 > /data/ssl/serial"
 	sh -c "echo 10 > /data/ssl/crlnumber"
@@ -154,6 +155,7 @@ f_start_http() {
 	# set document root
 	if [[ $Y_HTTP_SHARE_CERT == "yes" ]]; then
 		sed -i "s|.*server.document-root.*|server.document-root = \"$Y_HTTP_SHARE_FOLDER\"|" /data/lighttpd.conf
+		ln -sfn /data/ssl/certs /var/www/localhost/htdocs/certs
 	fi
 	
 	# enable directory listing
