@@ -93,16 +93,19 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	# create ca key and cert
 
-	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem 2048 > /dev/null 2>&1 
+	if [[ -z "$Y_CN" ]]; then
+		Y_CN=$Y_IP
+	fi
 
-	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem > /dev/null 2>&1
+	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem 2048
 
+	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
 
 	# ============ [ OCSP ] ============
 
 	# create ocsp key and cert
 
-	openssl req -config /data/ssl/openssl.cnf -subj "/CN=OCSPServer/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:2048 -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
+	openssl req -config /data/ssl/openssl.cnf -subj "/CN=OCSPServer/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:2048 -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem 
 
 	openssl ca -config /data/ssl/openssl.cnf -extensions v3_OCSP -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/server-cert_ocsp.pem -infiles /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
@@ -118,8 +121,10 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	# create a test client key and cert
 	
-	f_add tux1 pc1.test.lan 1234 yes
-
+	if [[ $Y_CREATE_TEST_CLIENT == "yes" ]]; then 
+		f_add tux1 pc1.test.lan 1234 yes
+	fi
+	
 	# ============ [ finalization ] ============
 
 	# ping gateway
@@ -155,7 +160,7 @@ f_start_http() {
 	# set document root
 	if [[ $Y_HTTP_SHARE_CERT == "yes" ]]; then
 		sed -i "s|.*server.document-root.*|server.document-root = \"$Y_HTTP_SHARE_FOLDER\"|" /data/lighttpd.conf
-		ln -sfn /data/ssl/certs /var/www/localhost/htdocs/certs
+		ln -sfn /data/ssl/certs $Y_HTTP_SHARE_FOLDER/certs
 	fi
 	
 	# enable directory listing
@@ -197,7 +202,7 @@ f_stop_crl() {
 f_start_crl() {
 
 	# initial crl
-	(/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl ; ln -sfn /data/ssl/certs/crl /var/www/localhost/htdocs/crl ) > /dev/null 2>&1
+	(/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl ; ln -sfn /data/ssl/certs/crl $Y_HTTP_SHARE_FOLDER/crl ) > /dev/null 2>&1
 	
 	# create cron folder
 	mkdir /data/crontabs > /dev/null 2>&1
@@ -245,7 +250,7 @@ f_add() {
 	
 	openssl req -config /data/ssl/openssl.cnf -newkey rsa:2048 -nodes -subj "/CN=$cn" $san -keyout /data/ssl/private/$prefix-key.pem -out /data/ssl/csr/$prefix-req.pem
 
-	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions $usr_cert -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/$prefix-cert.pem -infiles /data/ssl/csr/$prefix-req.pem
+	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions $usr_cert -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/$prefix-cert.pem -infiles /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
 	
 	# export
 	
@@ -261,7 +266,7 @@ f_export() {
 	
 	# export to p12
 
-	openssl pkcs12 -in /data/ssl/certs/$prefix-cert.pem -inkey /data/ssl/private/$prefix-key.pem -certfile /data/ssl/cacert.pem -export -out /data/ssl/certs/$prefix-cert.p12 -passout pass:$password
+	openssl pkcs12 -in /data/ssl/certs/$prefix-cert.pem -inkey /data/ssl/private/$prefix-key.pem -certfile /data/ssl/cacert.pem -export -out /data/ssl/certs/$prefix-cert.p12 -passout pass:$password 
 	chmod 644 /data/ssl/certs/$prefix-cert.p12
 
 	# export to p12 legacy

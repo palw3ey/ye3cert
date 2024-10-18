@@ -4,24 +4,24 @@
 
 # ============ [ global variable ] ============
 
-# script name
-vg_name=ye3cert
+# default language
+vg_default_language="fr_FR"
 
 # ============ [ function ] ============
 
 # echo information for docker logs
 function f_log(){
-  echo -e "$(date '+%Y-%m-%d %H:%M:%S') $(hostname) $vg_name: $@"
+  echo -e "$(date '+%Y-%m-%d %H:%M:%S') : $@"
 }
 
 # ============ [ internationalisation ] ============
 
-if [[ -f /i18n/$Y_LANGUAGE.sh ]]; then
-	f_log "i18n $Y_LANGUAGE"
+# load default language
+source /i18n/$vg_default_language.sh
+
+# override with choosen language
+if [[ $Y_LANGUAGE != $vg_default_language ]] && [[ -f /i18n/$Y_LANGUAGE.sh ]] ; then
 	source /i18n/$Y_LANGUAGE.sh
-else
-	f_log "i18n fr_FR"
-	source /i18n/fr_FR.sh
 fi
 
 # ============ [ config ] ============

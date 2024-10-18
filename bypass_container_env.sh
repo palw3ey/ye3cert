@@ -36,3 +36,4 @@
 # export Y_KEY_USAGE="nonRepudiation, digitalSignature, keyEncipherment"
 # export Y_EXTENDED_KEY_USAGE="serverAuth, clientAuth"
 # export Y_CA_PASS=ca
+# export Y_CREATE_TEST_CLIENT=yes

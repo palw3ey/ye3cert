@@ -22,7 +22,7 @@ MAINTAINER palw3ey <palw3ey@gmail.com>
 
 ENV TZ=Europe/Paris \
 	Y_LANGUAGE=fr_FR \
-	Y_IP=""
+	Y_IP="" \
 	Y_URL_IP_CHECK=http://whatismyip.akamai.com \
   	Y_URL_IP_CHECK_TIMEOUT=5 \
 	\
@@ -31,20 +31,20 @@ ENV TZ=Europe/Paris \
 	Y_HTTP_SHARE_CERT=no \
 	Y_HTTP_SHARE_FOLDER=/data/ssl/www \
 	Y_HTTP_PORT=80 \
-	Y_HTTP_PORT_SECURE=443
+	Y_HTTP_PORT_SECURE=443 \
 	\
 	# crl, frenquency is in seconde
 	Y_CRL=yes \
-	Y_CRL_FREQUENCY=15
+	Y_CRL_FREQUENCY=15 \
 	\
 	# ocsp
 	Y_OCSP=yes \
-	Y_OCSP_PORT=8080
+	Y_OCSP_PORT=8080 \
 	\
 	# default certificate
 	Y_DAYS=3650 \
 	Y_DNS=ye3cert.test.lan \
-	Y_CN=ye3cert \
+	Y_CN= \
 	Y_ORGANIZATION_NAME=Test \
 	Y_EMAIL_ADDRESS=webmaster@test.lan \
 	Y_COUNTRY_NAME=FR \
@@ -53,12 +53,13 @@ ENV TZ=Europe/Paris \
 	Y_ORGANIZATIONAL_UNIT_NAME=Web \
 	Y_KEY_USAGE="nonRepudiation, digitalSignature, keyEncipherment" \
 	Y_EXTENDED_KEY_USAGE="serverAuth, clientAuth" \
-	Y_CA_PASS=ca
+	Y_CA_PASS=ca \
+	Y_CREATE_TEST_CLIENT=yes
 
 ADD entrypoint.sh yee.sh /
 ADD i18n/ /i18n/
 
-RUN apk add --update --no-cache openssl tzdata lighttpd ; \
+RUN apk add --update --no-cache openssl tzdata lighttpd curl ; \
 	cp /usr/share/zoneinfo/$TZ /etc/localtime ; \
 	echo $TZ > /etc/timezone ; \
 	mkdir -p /data/ssl/certs ; \
