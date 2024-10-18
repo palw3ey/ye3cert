@@ -163,7 +163,7 @@ f_start_http() {
 		sed -i "s|.*server.document-root.*|server.document-root = \"$Y_HTTP_SHARE_FOLDER\"|" /data/lighttpd.conf
 		ln -sfn /data/ssl/certs $Y_HTTP_SHARE_FOLDER/certs
 	else
-		sed -i "s|.*server.document-root.*|server.document-root = \"$/var/www/localhost/htdocs\"|" /data/lighttpd.conf
+		sed -i "s|.*server.document-root.*|server.document-root = \"/var/www/localhost/htdocs\"|" /data/lighttpd.conf
 	fi
 	
 	# enable directory listing
