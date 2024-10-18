@@ -161,6 +161,8 @@ f_start_http() {
 	if [[ $Y_HTTP_SHARE_CERT == "yes" ]]; then
 		sed -i "s|.*server.document-root.*|server.document-root = \"$Y_HTTP_SHARE_FOLDER\"|" /data/lighttpd.conf
 		ln -sfn /data/ssl/certs $Y_HTTP_SHARE_FOLDER/certs
+	else
+		sed -i "s|.*server.document-root.*|server.document-root = \"$/var/www/localhost/htdocs\"|" /data/lighttpd.conf
 	fi
 	
 	# enable directory listing
@@ -202,7 +204,7 @@ f_stop_crl() {
 f_start_crl() {
 
 	# initial crl
-	(/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl ; ln -sfn /data/ssl/certs/crl $Y_HTTP_SHARE_FOLDER/crl ) > /dev/null 2>&1
+	(/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl ; ln -sfn /data/ssl/certs/crl /var/www/localhost/htdocs/crl ; ln -sfn /data/ssl/certs/crl $Y_HTTP_SHARE_FOLDER/crl ) > /dev/null 2>&1
 	
 	# create cron folder
 	mkdir /data/crontabs > /dev/null 2>&1
@@ -211,7 +213,7 @@ f_start_crl() {
 	echo "*/$Y_CRL_FREQUENCY * * * * (/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl) > /dev/null 2>&1" > /data/crontabs/root
 	
 	# start service
-	crond -c /data/crontabs
+	crond -c /data/crontabs > /dev/null 2>&1
 }
 
 
