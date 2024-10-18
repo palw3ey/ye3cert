@@ -15,23 +15,6 @@ if [[ $Y_LANGUAGE != $vg_default_language ]] && [[ -f /i18n/$Y_LANGUAGE.sh ]] ; 
 	source /i18n/$Y_LANGUAGE.sh
 fi
 
-# ============ [ config ] ============
-
-# get external ip
-vg_ip=$(curl -m $Y_URL_IP_CHECK_TIMEOUT -s $Y_URL_IP_CHECK)
-
-# if env variable Y_IP doesn't exist, then set to external ip or default route interface ip or first hostname ip
-	
-if [[ -z "$Y_IP" ]]; then
-	if expr "$vg_ip" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
-		Y_IP=$vg_ip
-	elif [[ ! -z "vg_interface_ip" ]]; then
-		Y_IP=$vg_interface_ip
-	else
-		Y_IP=$(hostname -i | cut -d ' ' -f1)
-	fi
-fi
-
 # ============ [ function ] ============
 
 # initial setup : create certificate authority server
@@ -53,6 +36,23 @@ f_init() {
 	fi
 	
 	# ============ [ preparation ] ============
+	
+	# get external ip
+	
+	vg_ip=$(curl -m $Y_URL_IP_CHECK_TIMEOUT -s $Y_URL_IP_CHECK)
+
+	# if env variable Y_IP doesn't exist, then set to external ip or default route interface ip or first hostname ip
+		
+	if [[ -z "$Y_IP" ]]; then
+		if expr "$vg_ip" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
+			Y_IP=$vg_ip
+		elif [[ ! -z "vg_interface_ip" ]]; then
+			Y_IP=$vg_interface_ip
+		else
+			Y_IP=$(hostname -i | cut -d ' ' -f1)
+		fi
+		echo "Y_IP : $Y_IP" 
+	fi
 
 	# create directories and files
 
@@ -96,6 +96,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 	if [[ -z "$Y_CN" ]]; then
 		Y_CN=$Y_IP
 	fi
+	echo "Y_CN : $Y_CN" 
 
 	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem 2048 > /dev/null 2>&1
 
@@ -213,7 +214,7 @@ f_start_crl() {
 	echo "*/$Y_CRL_FREQUENCY * * * * (/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl) > /dev/null 2>&1" > /data/crontabs/root
 	
 	# start service
-	crond -c /data/crontabs > /dev/null 2>&1
+	crond -c /data/crontabs > /dev/null 2>&1 & 
 }
 
 
