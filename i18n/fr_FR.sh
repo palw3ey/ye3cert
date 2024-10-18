@@ -43,5 +43,5 @@ i_HELP="
 --tz=text        : Fuseau horaire  (ex: Europe/Paris)
 
 Exemple :
-mgmt --action=add --prefix=tux2 --cn=pc2.test.lan --password=1234 --revo=yes --san=DNS.1:pc2.test.lan,IP.1:192.168.9.32,IP.2:10.2.9.32 
+yee --action=add --prefix=tux2 --cn=pc2.test.lan --password=1234 --revo=yes --san=DNS.1:pc2.test.lan,IP.1:192.168.9.32,IP.2:10.2.9.32 
 "
