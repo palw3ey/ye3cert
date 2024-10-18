@@ -11,7 +11,7 @@ vg_default_language="fr_FR"
 
 # echo information for docker logs
 function f_log(){
-  echo -e "$(date '+%Y-%m-%d %H:%M:%S') : $@"
+  echo -e " : $@"
 }
 
 # ============ [ internationalisation ] ============

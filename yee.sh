@@ -97,7 +97,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 		Y_CN=$Y_IP
 	fi
 
-	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem 2048
+	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem 2048 > /dev/null 2>&1
 
 	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
 
@@ -105,7 +105,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	# create ocsp key and cert
 
-	openssl req -config /data/ssl/openssl.cnf -subj "/CN=OCSPServer/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:2048 -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem 
+	openssl req -config /data/ssl/openssl.cnf -subj "/CN=OCSPServer/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:2048 -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
 	openssl ca -config /data/ssl/openssl.cnf -extensions v3_OCSP -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/server-cert_ocsp.pem -infiles /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
@@ -248,7 +248,7 @@ f_add() {
 	
 	# create client key and cert
 	
-	openssl req -config /data/ssl/openssl.cnf -newkey rsa:2048 -nodes -subj "/CN=$cn" $san -keyout /data/ssl/private/$prefix-key.pem -out /data/ssl/csr/$prefix-req.pem
+	openssl req -config /data/ssl/openssl.cnf -newkey rsa:2048 -nodes -subj "/CN=$cn" $san -keyout /data/ssl/private/$prefix-key.pem -out /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
 
 	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions $usr_cert -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/$prefix-cert.pem -infiles /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
 	
