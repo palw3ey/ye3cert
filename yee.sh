@@ -37,17 +37,26 @@ f_init() {
 	
 	# ============ [ preparation ] ============
 	
-	# get external ip
-	
-	vg_ip=$(curl -m $Y_URL_IP_CHECK_TIMEOUT -s $Y_URL_IP_CHECK)
-
 	# if env variable Y_IP doesn't exist, then set to external ip or default route interface ip or first hostname ip
 		
 	if [[ -z "$Y_IP" ]]; then
-		if expr "$vg_ip" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
-			Y_IP=$vg_ip
-		elif [[ ! -z "vg_interface_ip" ]]; then
-			Y_IP=$vg_interface_ip
+
+		# get external ip
+		if [[ $Y_IP_CHECK_EXTERNAL == "yes" ]] ; then
+			vl_ip_external=$(curl -m $Y_URL_IP_CHECK_TIMEOUT -s $Y_URL_IP_CHECK)
+		else 
+			vl_ip_external=""
+		fi
+		
+		# get default interface ip
+		vl_interface=$(route | awk '/^default/{print $NF}')
+		vl_interface_ip=$(/sbin/ifconfig $vl_interface | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+	
+		# choose
+		if expr "$vl_ip_external" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
+			Y_IP=$vl_ip_external
+		elif [[ ! -z "vl_interface_ip" ]]; then
+			Y_IP=$vl_interface_ip
 		else
 			Y_IP=$(hostname -i | cut -d ' ' -f1)
 		fi
@@ -106,7 +115,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	# create ocsp key and cert
 
-	openssl req -config /data/ssl/openssl.cnf -subj "/CN=OCSPServer/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:2048 -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
+	openssl req -config /data/ssl/openssl.cnf -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:2048 -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
 	openssl ca -config /data/ssl/openssl.cnf -extensions v3_OCSP -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/server-cert_ocsp.pem -infiles /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
@@ -116,7 +125,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	# create https server key and cert
 	
-	f_add server $Y_DNS server yes "DNS.1:$Y_DNS,IP.1:$Y_IP"
+	f_add server $Y_CN server yes "DNS.1:$Y_DNS,IP.1:$Y_IP"
 	
 	# ============ [ client ] ============
 

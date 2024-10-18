@@ -23,6 +23,7 @@ MAINTAINER palw3ey <palw3ey@gmail.com>
 ENV TZ=Europe/Paris \
 	Y_LANGUAGE=fr_FR \
 	Y_IP="" \
+	Y_IP_CHECK_EXTERNAL=yes \
 	Y_URL_IP_CHECK=http://whatismyip.akamai.com \
   	Y_URL_IP_CHECK_TIMEOUT=5 \
 	\

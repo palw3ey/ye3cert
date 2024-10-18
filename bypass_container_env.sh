@@ -4,7 +4,8 @@
 ## general
 # export TZ=Europe/Paris
 # export Y_LANGUAGE=fr_FR
-# export Y_IP=""
+# export Y_IP=
+# export Y_IP_CHECK_EXTERNAL=yes 
 # export Y_URL_IP_CHECK=http://whatismyip.akamai.com
 # export Y_URL_IP_CHECK_TIMEOUT=5
 

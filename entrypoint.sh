@@ -32,13 +32,10 @@ f_log "$i_update_timezone"
 # check ca file presence
 if [ -f "/data/ssl/cacert.pem" ]; then
 
-	f_log "$i_start HTTP"
 	if [[ $Y_HTTP == "yes" ]]; then /yee.sh --action=restart_http; fi
 	
-	f_log "$i_start CRL"
 	if [[ $Y_CRL == "yes" ]]; then /yee.sh --action=restart_crl; fi
 	
-	f_log "$i_start OCSP"
 	if [[ $Y_OCSP == "yes" ]]; then /yee.sh --action=restart_ocsp; fi
 	
 else
