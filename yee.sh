@@ -2,6 +2,7 @@
 
 # This sh script help you to manage the certificate server
 
+# env variables
 source /etc/profile.d/bypass_container_env.sh > /dev/null 2>&1
 
 # default language
