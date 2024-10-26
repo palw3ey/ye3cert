@@ -41,8 +41,9 @@ i_HELP="
 --prefix=text    : Filename prefix (ex: mycert, will produce: mycert-cert.pem)
 --cn=text        : Common Name (ex: laptop1.test.lan)
 --password=text  : Password (ex: mypassword)
---san=text       : Include SAN (ex: DNS.1:laptop1.test.lan)
 --revo=yes/no    : Include revocation URL, by default : yes
+--days=integer   : Certificate validity period
+--san=text       : Include SAN (ex: DNS.1:laptop1.test.lan)
 --tz=text        : Timezone (ex: Europe/Paris)
 
 Example :
