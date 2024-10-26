@@ -67,6 +67,9 @@ ENV TZ=Europe/Paris \
 	Y_TEST_CLIENT_CN=pc1.test.lan \
 	Y_TEST_CLIENT_PASSWORD=1234 \
 	Y_TEST_CLIENT_REVO=yes \
+	Y_TEST_CLIENT_DAYS=31 \
+	Y_TEST_CLIENT_SAN=DNS.1:pc1.my.net,IP.1:192.168.1.10
+
 
 ADD entrypoint.sh yee.sh /
 ADD i18n/ /i18n/
