@@ -77,6 +77,7 @@ f_init() {
   		fi
   	fi
 
+
 	# create directories and files
 
 	mkdir -p /data/ssl/private > /dev/null 2>&1
@@ -121,15 +122,35 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 	fi
 	echo "Y_CN : $Y_CN" 
 
+	vl_subj="/CN=${Y_CN}"
+	if [[ ! -z "$Y_COUNTRY_NAME" ]]; then
+ 		vl_subj="${vl_subj}/C=${Y_COUNTRY_NAME}"
+ 	fi
+ 	if [[ ! -z "$Y_STATE_OR_PROVINCE_NAME" ]]; then
+ 		vl_subj="${vl_subj}/ST=${Y_STATE_OR_PROVINCE_NAME}"
+ 	fi
+ 	if [[ ! -z "$Y_LOCALITY_NAME" ]]; then
+ 		vl_subj="${vl_subj}/L=${Y_LOCALITY_NAME}"
+ 	fi
+ 	if [[ ! -z "$Y_ORGANIZATION_NAME" ]]; then
+ 		vl_subj="${vl_subj}/O=${Y_ORGANIZATION_NAME}"
+ 	fi
+ 	if [[ ! -z "$Y_ORGANIZATIONAL_UNIT_NAME" ]]; then
+ 		vl_subj="${vl_subj}/OU=${Y_ORGANIZATIONAL_UNIT_NAME}"
+ 	fi
+ 	if [[ ! -z "$Y_EMAIL_ADDRESS" ]]; then
+ 		vl_subj="${vl_subj}/emailAddress=${Y_EMAIL_ADDRESS}"
+ 	fi
+  
 	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem $Y_KEY_SIZE > /dev/null 2>&1
 
-	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
+	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "$vl_subj" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
 
 	# ============ [ OCSP ] ============
 
 	# create ocsp key and cert
 
-	openssl req -config /data/ssl/openssl.cnf -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:$Y_KEY_SIZE -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
+	openssl req -config /data/ssl/openssl.cnf -subj "$vl_subj" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:$Y_KEY_SIZE -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
 	openssl ca -config /data/ssl/openssl.cnf -extensions v3_OCSP -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/server-cert_ocsp.pem -infiles /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
@@ -139,14 +160,14 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	# create https server key and cert
 	
-	f_add server $Y_CN server yes "DNS.1:$Y_DNS,IP.1:$Y_IP"
+	f_add server $Y_CN server yes $Y_DAYS "DNS.1:$Y_DNS,IP.1:$Y_IP"
 	
 	# ============ [ client ] ============
 
 	# create a test client key and cert
 	
-	if [[ $Y_CREATE_TEST_CLIENT == "yes" ]]; then 
-		f_add tux1 pc1.test.lan 1234 yes
+	if [[ $Y_TEST_CLIENT_CREATE == "yes" ]]; then 
+		f_add $Y_TEST_CLIENT_PREFIX $Y_TEST_CLIENT_CN $Y_TEST_CLIENT_PASSWORD $Y_TEST_CLIENT_REVO $Y_TEST_CLIENT_DAYS $Y_TEST_CLIENT_SAN
 	fi
 	
 	# ============ [ finalization ] ============
@@ -265,9 +286,16 @@ f_add() {
 		usr_cert='usr_cert_with_revocation'
 	fi
 	
-	# san
+	# days
 	if [[ ! -z "$5" ]]; then
-		san='-addext subjectAltName='$5
+		days=$5
+	else
+		days=$Y_DAYS_CLIENT
+	fi
+ 
+	# san
+	if [[ ! -z "$6" ]]; then
+		san='-addext subjectAltName='$6
 	else
 		san=''
 	fi
@@ -276,7 +304,7 @@ f_add() {
 	
 	openssl req -config /data/ssl/openssl.cnf -newkey rsa:$Y_KEY_SIZE -nodes -subj "/CN=$cn" $san -keyout /data/ssl/private/$prefix-key.pem -out /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
 
-	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions $usr_cert -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/$prefix-cert.pem -infiles /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
+	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions $usr_cert -days $days -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/$prefix-cert.pem -infiles /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
 	
 	# export
 	
@@ -384,11 +412,14 @@ while [ $# -gt 0 ]; do
 		--password=*|-pw=*)
 			password="${1#*=}"
 			;;
-		--san=*|-s=*)
-			san="${1#*=}"
-			;;
 		--revo=*|-r=*)
 			revo="${1#*=}"
+			;;
+		--days=*|-d=*)
+			days="${1#*=}"
+			;;
+		--san=*|-s=*)
+			san="${1#*=}"
 			;;
 		--tz=*|-t=*)
 			tz="${1#*=}"
@@ -412,7 +443,7 @@ case "$action" in
 	;;
 	"add")
 		if [[ ! -z "$prefix" && ! -z "$cn" && ! -z "$password" ]]; then
-			f_add $prefix $cn $password $revo $san
+			f_add $prefix $cn $password $revo $days $san
 		else 
 			f_arg
 		fi
