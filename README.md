@@ -1,6 +1,6 @@
 # ye3cert
 
-A container certificate authority server based on Openssl and Alpine, for creating and managing certificates. Light server, below 20 Mb. Including CRL, OCSP and HTTP server. GNS3 ready.  
+An image certificate authority server based on Openssl and Alpine, for creating and managing certificates. Light server, below 20 Mb. Including CRL, OCSP and HTTP server. GNS3 ready.  
 
 The /data folder is persistent.
 
