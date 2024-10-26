@@ -59,7 +59,8 @@ yee --action=add \
 docker run -dt --name mycert \
   -e TZ=America/Montreal \
   -e Y_HTTP_SHARE_CERT=yes \
-  -p 8443:443 \
+  -e Y_HTTP_PORT_SECURE=8443
+  -p 8443:8443 \
   -v /etc/letsencrypt/live/{YOUR_DOMAIN}/fullchain.pem:/data/fullchain.pem \
   -v /etc/letsencrypt/live/{YOUR_DOMAIN}/privkey.pem:/data/privkey.pem \
   palw3ey/ye3cert
