@@ -69,7 +69,7 @@ f_init() {
 	mkdir /data/ssl/csr > /dev/null 2>&1
 	mkdir /data/ssl/certs > /dev/null 2>&1
 	mkdir /data/ssl/newcerts > /dev/null 2>&1
-	mkdir /data/ssl/www > /dev/null 2>&1
+	mkdir $Y_HTTP_SHARE_FOLDER > /dev/null 2>&1
 	touch /data/ssl/index.txt
 	sh -c "echo 10 > /data/ssl/serial"
 	sh -c "echo 10 > /data/ssl/crlnumber"
@@ -107,7 +107,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 	fi
 	echo "Y_CN : $Y_CN" 
 
-	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem 2048 > /dev/null 2>&1
+	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem $Y_KEY_SIZE > /dev/null 2>&1
 
 	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
 
@@ -115,7 +115,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	# create ocsp key and cert
 
-	openssl req -config /data/ssl/openssl.cnf -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:2048 -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
+	openssl req -config /data/ssl/openssl.cnf -subj "/CN=$Y_CN/C=$Y_COUNTRY_NAME/ST=$Y_STATE_OR_PROVINCE_NAME/L=$Y_LOCALITY_NAME/O=$Y_ORGANIZATION_NAME/OU=$Y_ORGANIZATIONAL_UNIT_NAME/emailAddress=$Y_EMAIL_ADDRESS" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:$Y_KEY_SIZE -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
 	openssl ca -config /data/ssl/openssl.cnf -extensions v3_OCSP -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/server-cert_ocsp.pem -infiles /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
@@ -260,7 +260,7 @@ f_add() {
 	
 	# create client key and cert
 	
-	openssl req -config /data/ssl/openssl.cnf -newkey rsa:2048 -nodes -subj "/CN=$cn" $san -keyout /data/ssl/private/$prefix-key.pem -out /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
+	openssl req -config /data/ssl/openssl.cnf -newkey rsa:$Y_KEY_SIZE -nodes -subj "/CN=$cn" $san -keyout /data/ssl/private/$prefix-key.pem -out /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
 
 	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions $usr_cert -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/$prefix-cert.pem -infiles /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
 	
@@ -424,6 +424,15 @@ case "$action" in
 	;;
 	"stop_ocsp")
 		f_stop_ocsp
+	;;
+	"start_http")
+		f_start_http
+	;;
+	"start_crl")
+		f_start_crl
+	;;
+	"start_ocsp")
+		f_start_ocsp
 	;;
 	"restart_http")
 		f_stop_http

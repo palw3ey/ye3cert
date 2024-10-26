@@ -9,9 +9,16 @@ vg_default_language="fr_FR"
 
 # ============ [ function ] ============
 
-# echo information for docker logs
+# echo information for logs
 function f_log(){
-  echo -e " : $@"
+
+	# extra info in logs, if debug on
+	vl_log=""
+	if [[ $Y_DEBUG == "yes" ]]; then
+		vl_log="$(date '+%Y-%m-%d %H:%M:%S') $(hostname) $vg_name:"
+	fi
+
+	echo -e "$vl_log $@"
 }
 
 # ============ [ internationalisation ] ============
@@ -24,6 +31,8 @@ if [[ $Y_LANGUAGE != $vg_default_language ]] && [[ -f /i18n/$Y_LANGUAGE.sh ]] ; 
 	source /i18n/$Y_LANGUAGE.sh
 fi
 
+f_log "i18n : $Y_LANGUAGE"
+
 # ============ [ config ] ============
 
 f_log "$i_update_timezone"
@@ -32,11 +41,11 @@ f_log "$i_update_timezone"
 # check ca file presence
 if [ -f "/data/ssl/cacert.pem" ]; then
 
-	if [[ $Y_HTTP == "yes" ]]; then /yee.sh --action=restart_http; fi
+	if [[ $Y_HTTP == "yes" ]]; then /yee.sh --action=start_http; fi
 	
-	if [[ $Y_CRL == "yes" ]]; then /yee.sh --action=restart_crl; fi
+	if [[ $Y_CRL == "yes" ]]; then /yee.sh --action=start_crl; fi
 	
-	if [[ $Y_OCSP == "yes" ]]; then /yee.sh --action=restart_ocsp; fi
+	if [[ $Y_OCSP == "yes" ]]; then /yee.sh --action=start_ocsp; fi
 	
 else
 	
