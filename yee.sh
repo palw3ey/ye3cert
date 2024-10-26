@@ -150,9 +150,9 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	# create ocsp key and cert
 
-	openssl req -config /data/ssl/openssl.cnf -subj "$vl_subj" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:$Y_KEY_SIZE -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem 
+	openssl req -config /data/ssl/openssl.cnf -subj "$vl_subj" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:$Y_KEY_SIZE -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
-	openssl ca -config /data/ssl/openssl.cnf -extensions v3_OCSP -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/server-cert_ocsp.pem -infiles /data/ssl/csr/server-req_ocsp.pem 
+	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions v3_OCSP -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/server-cert_ocsp.pem -infiles /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1 
 
 	cat /data/ssl/private/server-keY_OCSP.pem /data/ssl/certs/server-cert_ocsp.pem > example.com.pem
 
