@@ -3,7 +3,7 @@
 # language : en_GB
 # translation by : palw3ey <palw3ey@gmail.com>
 # create : 20231203
-# update : 20231203
+# update : 20241025
 
 i_error="error"
 i_finished="finished"
@@ -29,6 +29,9 @@ i_HELP="
   stop_http      : Stop the HTTP service
   stop_crl       : Stop the CRL update service
   stop_ocsp      : Stop the OCSP service
+  start_http     : Start the HTTP service
+  start_crl      : Start the CRL update service
+  start_ocsp     : Start the OCSP service
   restart_http   : Restart the HTTP service
   restart_crl    : Restart the CRL update service
   restart_ocsp   : Restart the OCSP service
