@@ -17,7 +17,7 @@ i_HELP="
   init           : Recréer le serveur d'autorité de certification. Cela sauvegardera
                    le dossier /data/ssl dans /data/backup/YYYYmmddHHMMSS
                    Tous les services seront redémarrés
-  add            : Créer un certificat (ARG: prefix cn password revo[opt] san[opt])
+  add            : Créer un certificat (ARG: prefix cn password revo[opt] days[opt] san[opt])
   crl            : Afficher la CRL
   test           : Vérifier un certificat via le service OCSP (ARG: prefix)
   revoke         : Révoquer un certificat (ARG: prefix)
@@ -41,8 +41,9 @@ i_HELP="
 --prefix=text    : Préfixe du nom de fichier (ex: mycert, produira: mycert-cert.pem)
 --cn=text        : Nom commun (ex: laptop1.test.lan)
 --password=text  : Mot de passe (ex: mypassword)
---san=text       : Inclure le SAN (ex: DNS.1:laptop1.test.lan)
 --revo=yes/no    : Inclure l'URL de révocation, par default: yes
+--days=entier    : Durée de validité du certificat 
+--san=text       : Inclure le SAN (ex: DNS.1:laptop1.test.lan)
 --tz=text        : Fuseau horaire  (ex: Europe/Paris)
 
 Exemple :
