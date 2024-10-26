@@ -122,7 +122,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 	fi
 	echo "Y_CN : $Y_CN" 
 
-	vl_subj="/CN=${Y_CN}"
+	vl_subj=""
 	if [[ ! -z "$Y_COUNTRY_NAME" ]]; then
  		vl_subj="${vl_subj}/C=${Y_COUNTRY_NAME}"
  	fi
@@ -141,16 +141,18 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
  	if [[ ! -z "$Y_EMAIL_ADDRESS" ]]; then
  		vl_subj="${vl_subj}/emailAddress=${Y_EMAIL_ADDRESS}"
  	fi
-  
+
+   	vl_subj_ca="/CN=${Y_CN}${vl_subj}"
 	openssl genrsa -aes256 -passout pass:$Y_CA_PASS -out /data/ssl/private/cakey.pem $Y_KEY_SIZE > /dev/null 2>&1
 
-	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "$vl_subj" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
+	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "$vl_subj_ca" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
 
 	# ============ [ OCSP ] ============
 
 	# create ocsp key and cert
 
-	openssl req -config /data/ssl/openssl.cnf -subj "$vl_subj" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:$Y_KEY_SIZE -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
+   	vl_subj_ocsp="/CN=OCSPServer${vl_subj}"
+	openssl req -config /data/ssl/openssl.cnf -subj "$vl_subj_ocsp" -addext "subjectAltName=DNS:$Y_DNS,IP:$Y_IP" -newkey rsa:$Y_KEY_SIZE -nodes -keyout /data/ssl/private/server-keY_OCSP.pem -out /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1
 
 	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions v3_OCSP -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/server-cert_ocsp.pem -infiles /data/ssl/csr/server-req_ocsp.pem > /dev/null 2>&1 
 
