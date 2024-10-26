@@ -287,17 +287,17 @@ f_add() {
 	fi
 	
 	# days
-	if [[ ! -z "$5" ]]; then
-		days=$5
+	if [[ "$5" == "-" ]] ; then
+  		days=$Y_DAYS_CLIENT
 	else
-		days=$Y_DAYS_CLIENT
+		days=$5
 	fi
  
 	# san
-	if [[ ! -z "$6" ]]; then
-		san='-addext subjectAltName='$6
-	else
+	if [[ "$6" == "-" ]] ; then
 		san=''
+	else
+		san='-addext subjectAltName='$6
 	fi
 	
 	# create client key and cert
@@ -397,6 +397,10 @@ f_shutdown(){
 f_arg() {
 	echo -e "$(hostname -i)\n$i_HELP"
 }
+
+revo="-"
+days="-"
+san="-"
 
 while [ $# -gt 0 ]; do
 	case "$1" in
