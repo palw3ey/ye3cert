@@ -11,17 +11,17 @@ docker run -dt --name mycert \
   -e TZ=America/Cayenne -e Y_CREATE_TEST_CLIENT=yes -e Y_HTTP_SHARE_CERT=yes \
   -e Y_HTTP_PORT=8091 -e Y_HTTP_PORT_SECURE=8092 -e Y_OCSP_PORT=8093 -p 8091-8093:8091-8093 \
   ghcr.io/palw3ey/ye3cert:latest
-
-# To show the management actions :
-docker exec -it mycert sh --login -c "yee"
 ```
 
 # Test
 ```bash
-# get container IP :
-docker exec -it mycert sh --login -c "hostname -i"
+# Show the management actions :
+docker exec -it mycert yee
 
-# Open a web browser and paste the IP address,
+# Show the log :
+docker logs mycert
+
+# Get the ip adress and open a web browser
 # the certificate files will be displayed, and available for download.
 ```
 
