@@ -2,8 +2,8 @@ FROM alpine:latest
 
 LABEL org.opencontainers.image.title="ye3cert"
 LABEL org.opencontainers.image.version="1.0.2"
-LABEL org.opencontainers.image.created="2024-10-25T15:00:00-03:00"
-LABEL org.opencontainers.image.revision="20241025"
+LABEL org.opencontainers.image.created="2024-10-26T15:00:00-03:00"
+LABEL org.opencontainers.image.revision="20241026"
 LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.authors="palw3ey"
 LABEL org.opencontainers.image.vendor="palw3ey"
