@@ -17,7 +17,7 @@ i_HELP="
   init           : Recreate certificate authority server. This will backup 
                    the folder /data/ssl to /data/backup/YYYYmmddHHMMSS.
                    All services will be restarted
-  add            : Create a certificate (ARG: prefix cn password revo[opt] san[opt])
+  add            : Create a certificate (ARG: prefix cn password revo[opt] days[opt] san[opt])
   crl            : Show the CRL
   test           : Verify a certificate via the OCSP service (ARG: prefix)
   revoke         : Revoke a certificate (ARG: prefix)
