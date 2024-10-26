@@ -62,6 +62,17 @@ f_init() {
 		fi
 		echo "Y_IP : $Y_IP" 
 	fi
+	
+	# if env variable Y_DNS doesn't exist, then set to external domain, or hostname
+		
+	if [[ -z "$Y_DNS" ]]; then
+ 
+ 		Y_DNS=$(nslookup $Y_IP | grep -m 1 "name = " | sed 's/.*name = //')
+   
+		if [[ -z "$Y_DNS" ]]; then
+  			Y_DNS=$(hostname -f)
+  		fi
+  	fi
 
 	# create directories and files
 
