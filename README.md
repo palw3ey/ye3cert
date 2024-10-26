@@ -7,7 +7,10 @@ The /data folder is persistent.
 # Simple usage
 
 ```bash
-docker run -dt --name mycert -e Y_CREATE_TEST_CLIENT=yes -e Y_HTTP_SHARE_CERT=yes -e Y_HTTP_PORT=8091 -e Y_HTTP_PORT_SECURE=8092 -e Y_OCSP_PORT=8093 -p 8091-8093:8091-8093 ghcr.io/palw3ey/ye3cert:latest
+docker run -dt --name mycert \
+  -e TZ=America/Cayenne -e Y_CREATE_TEST_CLIENT=yes -e Y_HTTP_SHARE_CERT=yes \
+  -e Y_HTTP_PORT=8091 -e Y_HTTP_PORT_SECURE=8092 -e Y_OCSP_PORT=8093 -p 8091-8093:8091-8093 \
+  ghcr.io/palw3ey/ye3cert:latest
 
 # To show the management actions :
 docker exec -it mycert sh --login -c "yee"
