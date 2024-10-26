@@ -7,10 +7,10 @@ The /data folder is persistent.
 # Simple usage
 
 ```bash
-docker run -dt --name mycert -e Y_HTTP_SHARE_CERT=yes palw3ey/ye3cert
+docker run -dt -e Y_CREATE_TEST_CLIENT=yes -e Y_HTTP_SHARE_CERT=yes -p 8443:443 ghcr.io/palw3ey/ye3cert:latest
 
 # To show the management actions :
-docker exec -it mycert sh --login -c "mgmt"
+docker exec -it mycert sh --login -c "yee"
 ```
 
 # Test
@@ -26,7 +26,7 @@ docker exec -it mycert sh --login -c "hostname -i"
 
 - Show a base64 certificate in the terminal, eg: tux1 :
 ```bash
-docker exec -it mycert sh --login -c "mgmt --action=pem --prefix=tux1"
+docker exec -it mycert sh --login -c "yee --action=pem --prefix=tux1"
 ```
 
 - Browse the ssl folder from the host :
@@ -41,7 +41,7 @@ ls $(docker inspect mycert -f '{{range .Mounts}}{{ if eq .Type "volume" }}{{prin
 docker exec -it mycert sh --login -c sh
 
 # use the management script
-mgmt --action=add \
+yee --action=add \
   --prefix=tux2 \
   --cn=pc2.test.lan \
   --password=1234 \
