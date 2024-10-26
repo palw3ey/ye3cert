@@ -394,14 +394,17 @@ f_shutdown(){
 	/bin/kill `/bin/ps aux | /bin/grep "tail -f /dev/null" | /bin/grep -v grep | /usr/bin/awk '{ print $1 }'`
 }
 
+# show help
 f_arg() {
 	echo -e "$(hostname -i)\n$i_HELP"
 }
 
+# optional argument
 revo="-"
 days="-"
 san="-"
 
+# get argument
 while [ $# -gt 0 ]; do
 	case "$1" in
 		--action=*|-a=*)
@@ -440,7 +443,7 @@ while [ $# -gt 0 ]; do
 	shift
 done
 
-
+# switch
 case "$action" in
 	"init")
 		f_init
