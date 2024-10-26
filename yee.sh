@@ -2,7 +2,7 @@
 
 # This sh script help you to manage the certificate server
 
-source /etc/profile.d/bypass_container_env.sh
+source /etc/profile.d/bypass_container_env.sh > /dev/null 2>&1
 
 # default language
 vg_default_language="fr_FR"
