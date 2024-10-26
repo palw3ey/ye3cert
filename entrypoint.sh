@@ -35,6 +35,9 @@ f_log "i18n : $Y_LANGUAGE"
 
 # ============ [ config ] ============
 
+# create/update symbolic link for bypass_container_env.sh 
+ln -sfn /data/bypass_container_env.sh /etc/profile.d/bypass_container_env.sh
+
 f_log "$i_update_timezone"
 /yee.sh --action=timezone --tz=$TZ
 
@@ -53,10 +56,6 @@ else
 	/yee.sh --action=init
 
 fi
-
-# create/update symbolic link for bypass_container_env.sh
- 
-ln -sfn /data/bypass_container_env.sh /etc/profile.d/bypass_container_env.sh
 
 f_log ":: $i_ready ::"
 
