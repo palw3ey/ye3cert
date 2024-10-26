@@ -67,7 +67,7 @@ f_init() {
 		
 	if [[ -z "$Y_DNS" ]]; then
  
- 		Y_DNS=$(nslookup $Y_IP | grep -m 1 "name = " | sed 's/.*name = //')
+ 		Y_DNS=$(nslookup $Y_IP | grep -m 1 'name = ' | sed 's/.*name = //')
    
 		if [[ -z "$Y_DNS" ]]; then
   			Y_DNS=$(hostname -f)
