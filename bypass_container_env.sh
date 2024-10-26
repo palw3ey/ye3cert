@@ -36,7 +36,7 @@
 # export Y_CA_PASS=ca
 # export Y_DNS=
 # export Y_CN=
-# export Y_COUNTRY_NAME=
+# export Y_COUNTRY_NAME=FR
 # export Y_STATE_OR_PROVINCE_NAME=
 # export Y_LOCALITY_NAME=
 # export Y_ORGANIZATION_NAME=
