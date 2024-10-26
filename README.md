@@ -78,7 +78,11 @@ These are the env variables and their default values.
 | :- |:- |:- |:- |
 |TZ | text | Europe/Paris | Time zone. The list is in the folder /usr/share/zoneinfo |
 |Y_LANGUAGE | text | fr_FR | Language. The list is in the folder /i18n/ |
+|Y_DEBUG | yes/no | no | yes, to show more messages |
 |Y_IP | IP address | | Server IP address |
+|Y_IP_CHECK_EXTERNAL | yes/no | yes | yes, to retrieve the public IP |
+|Y_URL_IP_CHECK | url | http://whatismyip.akamai.com | Url that curl will use to retrieve the public IP |
+|Y_URL_IP_CHECK_TIMEOUT | integer | 5 | this is the -m option in curl : Maximum time allowed, in second |
 |Y_HTTP | yes/no | yes | yes, enable http/https server |
 |Y_HTTP_SHARE_CERT | yes/no | no | yes, to show certs files in the http server directory listing |
 |Y_HTTP_SHARE_FOLDER | folder path | /data/ssl/certs | http server directory listing path |
