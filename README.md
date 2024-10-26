@@ -142,7 +142,7 @@ docker run -dt --name my_customized_cert ye3cert
 
 | name | version |
 | :- |:- |
-|ye3cert | 1.0.0 |
+|ye3cert | 1.0.2 |
 |openssl | 3.3.2 |
 |lighttpd | 1.4.76 |
 |alpine | 3.20.3 |
