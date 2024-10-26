@@ -108,7 +108,7 @@ basicConstraints=CA:FALSE
 keyUsage = $Y_KEY_USAGE
 subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid,issuer
-crlDistributionPoints = URI:http://$Y_IP:$Y_HTTP_PORT
+crlDistributionPoints = URI:http://$Y_IP:$Y_HTTP_PORT/crl
 authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 " >> /data/ssl/openssl.cnf
 	
