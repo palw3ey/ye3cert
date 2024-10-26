@@ -29,7 +29,7 @@ docker logs mycert
 
 - Show a base64 certificate in the terminal, eg: tux1 :
 ```bash
-docker exec -it mycert sh --login -c "yee --action=pem --prefix=tux1"
+docker exec -it mycert yee --action=pem --prefix=tux1
 ```
 
 - Browse the ssl folder from the host :
@@ -41,7 +41,7 @@ ls $(docker inspect mycert -f '{{range .Mounts}}{{ if eq .Type "volume" }}{{prin
 - Add a client certificate, with a filename prefix : tux2
 ```bash
 # connect to the container
-docker exec -it mycert sh --login -c sh
+docker exec -it mycert sh 
 
 # use the management script
 yee --action=add \
