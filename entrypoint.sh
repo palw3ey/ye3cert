@@ -35,25 +35,35 @@ f_log "i18n : $Y_LANGUAGE"
 
 # ============ [ config ] ============
 
+# debug
+if [[ $Y_DEBUG == "yes" ]] ; then
+	sed 's|> /dev/null 2>&1||g' /yee.sh > /yee-debug.sh
+	chmod +x /yee-debug.sh
+	yee_command=/yee-debug.sh
+else
+	yee_command=/yee.sh
+fi
+
 # create/update symbolic link for bypass_container_env.sh 
 ln -sfn /data/bypass_container_env.sh /etc/profile.d/bypass_container_env.sh
 
+# timezone
 f_log "$i_update_timezone"
-/yee.sh --action=timezone --tz=$TZ
+$yee_command --action=timezone --tz=$TZ
 
 # check ca file presence
 if [ -f "/data/ssl/cacert.pem" ]; then
 
-	if [[ $Y_HTTP == "yes" ]]; then /yee.sh --action=start_http; fi
+	if [[ $Y_HTTP == "yes" ]]; then $yee_command --action=start_http; fi
 	
-	if [[ $Y_CRL == "yes" ]]; then /yee.sh --action=start_crl; fi
+	if [[ $Y_CRL == "yes" ]]; then $yee_command --action=start_crl; fi
 	
-	if [[ $Y_OCSP == "yes" ]]; then /yee.sh --action=start_ocsp; fi
+	if [[ $Y_OCSP == "yes" ]]; then $yee_command --action=start_ocsp; fi
 	
 else
 	
 	f_log "$i_run_initial_setup"
-	/yee.sh --action=init
+	$yee_command --action=init
 
 fi
 
