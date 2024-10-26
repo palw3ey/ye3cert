@@ -28,14 +28,14 @@
 
 ## default certificate
 # export Y_DAYS=3650
-# export Y_DNS=ye3cert.test.lan
+# export Y_DNS=
 # export Y_CN=
-# export Y_ORGANIZATION_NAME=Test
-# export Y_EMAIL_ADDRESS=webmaster@test.lan
-# export Y_COUNTRY_NAME=FR
-# export Y_STATE_OR_PROVINCE_NAME=Ile-de-France
-# export Y_LOCALITY_NAME=Paris
-# export Y_ORGANIZATIONAL_UNIT_NAME=Web
+# export Y_ORGANIZATION_NAME=
+# export Y_EMAIL_ADDRESS=
+# export Y_COUNTRY_NAME=
+# export Y_STATE_OR_PROVINCE_NAME=
+# export Y_LOCALITY_NAME=
+# export Y_ORGANIZATIONAL_UNIT_NAME=
 # export Y_KEY_USAGE="nonRepudiation, digitalSignature, keyEncipherment"
 # export Y_EXTENDED_KEY_USAGE="serverAuth, clientAuth"
 # export Y_CA_PASS=ca
