@@ -13,8 +13,8 @@ LABEL org.opencontainers.image.url="https://github.com/palw3ey/ye3cert"
 LABEL org.opencontainers.image.documentation="https://github.com/palw3ey/ye3cert/blob/main/README.md"
 LABEL org.opencontainers.image.source="https://github.com/palw3ey/ye3cert"
 LABEL org.opencontainers.image.base.name="ghcr.io/palw3ey/ye3cert:1.0.2"
-LABEL org.opencontainers.image.description="A docker CA server based on Openssl and Alpine. Below 20 Mb. With CRL, OCSP and HTTP. GNS3 ready."
-LABEL org.opencontainers.image.usage="docker run -dt -e Y_CREATE_TEST_CLIENT=yes -e Y_HTTP_SHARE_CERT=yes -p 8443:443 ghcr.io/palw3ey/ye3cert:latest"
+LABEL org.opencontainers.image.description="An image CA server based on Openssl and Alpine. Below 20 Mb. With CRL, OCSP and HTTP. GNS3 ready."
+LABEL org.opencontainers.image.usage="docker run -dt -e Y_CREATE_TEST_CLIENT=yes -e Y_HTTP_SHARE_CERT=yes -p 8443:443 --name mycert ghcr.io/palw3ey/ye3cert:latest"
 LABEL org.opencontainers.image.tip="The folder /data is persistent"
 LABEL org.opencontainers.image.premiere="20231203"
 
@@ -45,7 +45,7 @@ ENV TZ=Europe/Paris \
 	\
 	# default certificate
 	Y_DAYS=3650 \
-	Y_DNS=ye3cert.test.lan \
+	Y_DNS= \
 	Y_CN= \
 	Y_ORGANIZATION_NAME=Test \
 	Y_EMAIL_ADDRESS=webmaster@test.lan \
