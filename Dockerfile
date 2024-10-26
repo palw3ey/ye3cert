@@ -45,7 +45,7 @@ ENV TZ=Europe/Paris \
 	\
 	# default certificate
 	Y_DAYS=3650 \
-	Y_DNS= \
+	Y_DNS=ye3cert.test.lan \
 	Y_CN= \
 	Y_ORGANIZATION_NAME=Test \
 	Y_EMAIL_ADDRESS=webmaster@test.lan \

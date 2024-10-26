@@ -28,7 +28,7 @@
 
 ## default certificate
 # export Y_DAYS=3650
-# export Y_DNS=
+# export Y_DNS=ye3cert.test.lan
 # export Y_CN=
 # export Y_ORGANIZATION_NAME=Test
 # export Y_EMAIL_ADDRESS=webmaster@test.lan
