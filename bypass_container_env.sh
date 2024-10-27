@@ -21,7 +21,7 @@
 ## crl, frequency is in seconde
 # export Y_CRL=yes
 # export Y_CRL_FREQUENCY="*/15       *       *       *       *"
-# export Y_CRL_SEC_NEXT=900
+# export Y_CRL_SEC_NEXT=300
 
 ## ocsp
 # export Y_OCSP=yes
