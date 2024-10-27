@@ -40,7 +40,7 @@ explorer %USERPROFILE%\Downloads\cacert.crt
 certutil -URL http://IP:8091/crl
 
 :: CLI, should display at the end : "Leaf certificate revocation check passed"
-certutil -f –urlfetch -verify "%USERPROFILE%\Downloads\tux1-cert.pem"
+certutil -f –urlfetch -verify "%USERPROFILE%\Downloads\tux1-cert.crt"
 
 :: Check errors in Windows Event Viewer : Custom > Administrative Events
 ```
