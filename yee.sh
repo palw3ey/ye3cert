@@ -147,8 +147,13 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "$vl_subj_ca" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
 
-	# publish
+	# publish pem
+ 	ln -sfn /data/ssl/cacert.pem /data/ssl/certs/cacert.pem
+ 	ln -sfn /data/ssl/cacert.pem /var/www/localhost/htdocs/cacert.pem
+	ln -sfn /data/ssl/cacert.pem $Y_HTTP_SHARE_FOLDER/cacert.pem
+ 	# convert to crt and publish 
  	openssl x509 -outform der -in /data/ssl/cacert.pem -out /data/ssl/cacert.crt
+ 	ln -sfn /data/ssl/cacert.crt /data/ssl/certs/cacert.crt
  	ln -sfn /data/ssl/cacert.crt /var/www/localhost/htdocs/cacert.crt
 	ln -sfn /data/ssl/cacert.crt $Y_HTTP_SHARE_FOLDER/cacert.crt
  
