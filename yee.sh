@@ -374,14 +374,14 @@ function f_add_random(){
  		# generate credentials
  		vl_user=$(tr -dc $vg_username_char </dev/urandom | head -c $vg_username_length; echo)
    		vl_password=$(tr -dc $vg_password_char </dev/urandom | head -c $vg_password_length; echo)
-		vl_result="$vl_user : $vl_password"
+		vl_result="$vl_user $vl_password"
 
   		# export credentials
   		echo $vl_result >> $vl_export
 
     		# show credentials
 		if [[ $vl_log == "yes" ]]; then 
-			echo $vl_result
+			echo "CRED : $vl_result"
 		fi
 
    		# create certificate
