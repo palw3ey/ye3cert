@@ -5,8 +5,17 @@
 # env variables
 source /etc/profile.d/bypass_container_env.sh > /dev/null 2>&1
 
+# ============ [ global variable ] ============
+
 # default language
 vg_default_language="fr_FR"
+
+# id and password parameters
+vg_users_separator=":"
+vg_username_char="a-z"
+vg_username_length=12
+vg_password_char="A-Za-z0-9"
+vg_password_length=32
 
 # ============ [ internationalisation ] ============
 
@@ -45,8 +54,8 @@ f_init() {
 	if [[ -z "$Y_IP" ]]; then
 
 		# get external ip
-		if [[ $Y_IP_CHECK_EXTERNAL == "yes" ]] ; then
-			vl_ip_external=$(curl -m $Y_URL_IP_CHECK_TIMEOUT -s $Y_URL_IP_CHECK)
+		if [[ $Y_IP_CHECK_PUBLIC == "yes" ]] ; then
+			vl_ip_external=$(curl -m $Y_IP_CHECK_URL_TIMEOUT -s $Y_IP_CHECK_URL)
 		else 
 			vl_ip_external=""
 		fi
@@ -181,6 +190,12 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 	if [[ $Y_TEST_CLIENT_CREATE == "yes" ]]; then 
 		f_add $Y_TEST_CLIENT_PREFIX $Y_TEST_CLIENT_CN $Y_TEST_CLIENT_PASSWORD $Y_TEST_CLIENT_REVO $Y_TEST_CLIENT_DAYS $Y_TEST_CLIENT_SAN
 	fi
+
+ 	# create random client key and cert
+
+   	if [[ -z "$Y_RANDOM_CLIENT" ]]; then
+ 		f_add_random $Y_RANDOM_CLIENT $Y_RANDOM_CLIENT_REVO $Y_RANDOM_CLIENT_DAYS $Y_RANDOM_CLIENT_CREDS_EXPORT $Y_RANDOM_CLIENT_CREDS_LOG
+   	fi
 	
 	# ============ [ finalization ] ============
 
@@ -284,7 +299,7 @@ f_start_ocsp() {
 	/usr/bin/openssl ocsp -resp_text -ignore_err -nmin 1 -port $Y_OCSP_PORT -index /data/ssl/index.txt -CA /data/ssl/cacert.pem -rkey /data/ssl/private/server-keY_OCSP.pem -rsigner /data/ssl/certs/server-cert_ocsp.pem -out /data/ssl/log.txt > /dev/null 2>&1 &
 }
 
-# add a certificate
+# create a certificate
 f_add() {
 	
 	prefix=$1
@@ -322,6 +337,57 @@ f_add() {
 	
 	f_export $prefix $password
 	
+}
+
+
+# create random certificates
+function f_add_random(){
+
+	vl_count=$1
+  
+	if [[ -z "$2" ]]; then
+ 		vl_revo=$Y_RANDOM_CLIENT_REVO
+ 	else
+ 		vl_revo=$2
+ 	fi
+  
+	if [[ -z "$3" ]]; then
+ 		vl_days=$Y_RANDOM_CLIENT_DAYS
+ 	else
+ 		vl_days=$3
+ 	fi
+  
+	if [[ -z "$4" ]]; then
+ 		vl_export=$Y_RANDOM_CLIENT_CREDS_EXPORT
+ 	else
+ 		vl_export=$4
+ 	fi
+
+  	if [[ -z "$5" ]]; then
+ 		vl_log=$Y_RANDOM_CLIENT_CREDS_LOG
+ 	else
+ 		vl_log=$5
+ 	fi
+ 
+	for i in $(seq $vl_count)
+	do
+ 		# generate credentials
+ 		vl_user=$(tr -dc $vg_username_char </dev/urandom | head -c $vg_username_char; echo)
+   		vl_password=$(tr -dc $vg_password_char </dev/urandom | head -c $vg_password_length; echo)
+		vl_result="$vl_user : $vl_password"
+
+  		# export credentials
+  		echo $vl_result >> $vl_export
+
+    		# show credentials
+		if [[ $vl_log == "yes" ]]; then 
+			echo $vl_result
+		fi
+
+   		# create certificate
+		f_add $vl_user $vl_user $vl_password $vl_revo $vl_days 
+	done
+ 
 }
 
 # export to p12
@@ -419,6 +485,8 @@ f_arg() {
 revo="-"
 days="-"
 san="-"
+export="-"
+log="-"
 
 # get argument
 while [ $# -gt 0 ]; do
@@ -429,7 +497,7 @@ while [ $# -gt 0 ]; do
 		--prefix=*|-p=*)
 			prefix="${1#*=}"
 			;;
-		--cn=*|-c=*)
+		--cn=*)
 			cn="${1#*=}"
 			;;
 		--password=*|-pw=*)
@@ -443,6 +511,15 @@ while [ $# -gt 0 ]; do
 			;;
 		--san=*|-s=*)
 			san="${1#*=}"
+			;;
+		--count=*|-c=*)
+			count="${1#*=}"
+			;;
+		--export=*|-e=*)
+			export="${1#*=}"
+			;;
+		--log=*|-l=*)
+			log="${1#*=}"
 			;;
 		--tz=*|-t=*)
 			tz="${1#*=}"
@@ -467,6 +544,13 @@ case "$action" in
 	"add")
 		if [[ ! -z "$prefix" && ! -z "$cn" && ! -z "$password" ]]; then
 			f_add $prefix $cn $password $revo $days $san
+		else 
+			f_arg
+		fi
+	;;
+ 	"random")
+		if [[ ! -z "$count" ]]; then
+   			f_add_random $count $revo $days $export $log
 		else 
 			f_arg
 		fi
