@@ -314,14 +314,14 @@ f_add() {
 	fi
 	
 	# days
-	if [[ "$5" == "-" ]] ; then
+	if [[ -z "$5" ]] || [[ "$5" == "-" ]] ; then
   		days=$Y_DAYS_CLIENT
 	else
 		days=$5
 	fi
  
 	# san
-	if [[ "$6" == "-" ]] ; then
+	if [[ -z "$6" ]] || [[ "$6" == "-" ]] ; then
 		san=''
 	else
 		san='-addext subjectAltName='$6
@@ -345,25 +345,25 @@ function f_add_random(){
 
 	vl_count=$1
   
-	if [[ -z "$2" ]]; then
+	if [[ -z "$2" ]] || [[ "$2" == "-" ]] ; then
  		vl_revo=$Y_RANDOM_CLIENT_REVO
  	else
  		vl_revo=$2
  	fi
   
-	if [[ -z "$3" ]]; then
+	if [[ -z "$3" ]] || [[ "$3" == "-" ]] ; then
  		vl_days=$Y_RANDOM_CLIENT_DAYS
  	else
  		vl_days=$3
  	fi
   
-	if [[ -z "$4" ]]; then
+	if [[ -z "$4" ]] || [[ "$4" == "-" ]] ; then
  		vl_export=$Y_RANDOM_CLIENT_CREDS_EXPORT
  	else
  		vl_export=$4
  	fi
 
-  	if [[ -z "$5" ]]; then
+  	if [[ -z "$5" ]] || [[ "$5" == "-" ]] ; then
  		vl_log=$Y_RANDOM_CLIENT_CREDS_LOG
  	else
  		vl_log=$5
@@ -385,7 +385,8 @@ function f_add_random(){
 		fi
 
    		# create certificate
-		f_add $vl_user $vl_user $vl_password $vl_revo $vl_days 
+		f_add $vl_user $vl_user $vl_password $vl_revo $vl_days
+  
 	done
  
 }
