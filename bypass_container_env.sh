@@ -6,9 +6,9 @@
 # export Y_LANGUAGE=fr_FR
 # export Y_DEBUG=no
 # export Y_IP=
-# export Y_IP_CHECK_EXTERNAL=yes
-# export Y_URL_IP_CHECK=http://whatismyip.akamai.com
-# export Y_URL_IP_CHECK_TIMEOUT=5
+# export Y_IP_CHECK_PUBLIC=no
+# export Y_IP_CHECK_URL=http://whatismyip.akamai.com
+# export Y_IP_CHECK_URL_TIMEOUT=5
 
 ## http
 # export Y_HTTP=yes
@@ -42,6 +42,11 @@
 # export Y_ORGANIZATION_NAME=Test
 # export Y_ORGANIZATIONAL_UNIT_NAME=Web
 # export Y_EMAIL_ADDRESS=webmaster@test.lan
+
+## random client
+# export Y_RANDOM_CLIENT=
+# export Y_RANDOM_CLIENT_REVO=yes
+# export Y_RANDOM_CLIENT_DAYS=31
 
 ## test client
 # export Y_TEST_CLIENT_CREATE=no
