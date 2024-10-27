@@ -416,7 +416,7 @@ f_test() {
  	# crl
   	echo "CRL:"
  	vl_serial=$(openssl x509 -in /data/ssl/certs/$prefix-cert.pem -noout -serial | cut -d= -f2)
-	openssl crl -inform DER -text -in /data/ssl/certs/crl | grep "Serial Number: $vl_serial"
+	openssl crl -inform DER -text -in /data/ssl/certs/crl | grep -A 2 "Serial Number: $vl_serial"
 
  	# ocsp
   	echo "OCSP:"
