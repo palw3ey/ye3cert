@@ -37,11 +37,11 @@
 # export Y_DNS=
 # export Y_CN=
 # export Y_COUNTRY_NAME=FR
-# export Y_STATE_OR_PROVINCE_NAME=
-# export Y_LOCALITY_NAME=
-# export Y_ORGANIZATION_NAME=
-# export Y_ORGANIZATIONAL_UNIT_NAME=
-# export Y_EMAIL_ADDRESS=
+# export Y_STATE_OR_PROVINCE_NAME=Ile-de-France
+# export Y_LOCALITY_NAME=Paris
+# export Y_ORGANIZATION_NAME=Test
+# export Y_ORGANIZATIONAL_UNIT_NAME=Web
+# export Y_EMAIL_ADDRESS=webmaster@test.lan
 
 ## test client
 # export Y_TEST_CLIENT_CREATE=no
