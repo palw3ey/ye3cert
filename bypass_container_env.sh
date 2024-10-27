@@ -9,6 +9,7 @@
 # export Y_IP_USE_PUBLIC=no
 # export Y_IP_CHECK_URL=http://whatismyip.akamai.com
 # export Y_IP_CHECK_URL_TIMEOUT=5
+# export Y_CRED_EXPORT=/data/ssl/cred
 
 ## http
 # export Y_HTTP=yes
@@ -47,8 +48,6 @@
 # export Y_RANDOM_CLIENT=
 # export Y_RANDOM_CLIENT_REVO=yes
 # export Y_RANDOM_CLIENT_DAYS=731
-# export Y_RANDOM_CLIENT_CREDS_EXPORT=/data/ssl/CREDS_RANDOM
-# export Y_RANDOM_CLIENT_CREDS_LOG=yes
 
 ## test client
 # export Y_TEST_CLIENT_CREATE=no
