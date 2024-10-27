@@ -3,7 +3,7 @@
 # language : fr_FR
 # translation by : palw3ey <palw3ey@gmail.com>
 # create : 20231203
-# update : 20241025
+# update : 20241027
 
 i_error="erreur"
 i_finished="terminé"
@@ -18,6 +18,7 @@ i_HELP="
                    le dossier /data/ssl dans /data/backup/YYYYmmddHHMMSS
                    Tous les services seront redémarrés
   add            : Créer un certificat (ARG: prefix cn password revo[opt] days[opt] san[opt])
+  random         : Create random certificates (ARG: count revo[opt] days[opt] export[opt] log[opt])
   crl            : Afficher la CRL
   test           : Vérifier un certificat via le service OCSP (ARG: prefix)
   revoke         : Révoquer un certificat (ARG: prefix)
@@ -44,6 +45,9 @@ i_HELP="
 --revo=yes/no    : Inclure l'URL de révocation, par default: yes
 --days=entier    : Durée de validité du certificat 
 --san=text       : Inclure le SAN (ex: DNS.1:laptop1.test.lan)
+--count=integer  : Nombre de certificats aléatoires à créer
+--export=file    : Le fichier d'exportation contenant les informations d'identification
+--log=yes/no     : Afficher les informations d'identification
 --tz=text        : Fuseau horaire  (ex: Europe/Paris)
 
 Exemple :
