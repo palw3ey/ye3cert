@@ -3,7 +3,7 @@
 # language : en_GB
 # translation by : palw3ey <palw3ey@gmail.com>
 # create : 20231203
-# update : 20241025
+# update : 20241027
 
 i_error="error"
 i_finished="finished"
