@@ -27,6 +27,7 @@ ENV TZ=Europe/Paris \
 	Y_IP_CHECK_PUBLIC=no \
 	Y_IP_CHECK_URL=http://whatismyip.akamai.com \
   	Y_IP_CHECK_URL_TIMEOUT=5 \
+   	Y_CRED_EXPORT=/data/ssl/cred \
 	\
 	# http
 	Y_HTTP=yes \
@@ -65,7 +66,6 @@ ENV TZ=Europe/Paris \
 	Y_RANDOM_CLIENT= \
 	Y_RANDOM_CLIENT_REVO=yes \
 	Y_RANDOM_CLIENT_DAYS=731 \
-	Y_RANDOM_CLIENT_CREDS_EXPORT=/data/ssl/CREDS_RANDOM \
 	Y_RANDOM_CLIENT_CREDS_LOG=yes \
 	\
 	# test client
