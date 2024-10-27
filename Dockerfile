@@ -14,7 +14,7 @@ LABEL org.opencontainers.image.documentation="https://github.com/palw3ey/ye3cert
 LABEL org.opencontainers.image.source="https://github.com/palw3ey/ye3cert"
 LABEL org.opencontainers.image.base.name="ghcr.io/palw3ey/ye3cert:1.0.2"
 LABEL org.opencontainers.image.description="An image CA server based on Openssl and Alpine. Below 20 Mb. With CRL, OCSP and HTTP. GNS3 ready."
-LABEL org.opencontainers.image.usage="docker run -dt --name mycert -e TZ=America/Cayenne -e Y_TEST_CLIENT_CREATE=yes -e Y_HTTP_SHARE_CERT=yes -e Y_HTTP_PORT=8091 -e Y_HTTP_PORT_SECURE=8092 -e Y_OCSP_PORT=8093 -p 8091-8093:8091-8093 ghcr.io/palw3ey/ye3cert:latest"
+LABEL org.opencontainers.image.usage="docker run -dt --name mycert -e TZ=America/Cayenne -e Y_IP_USE_PUBLIC=yes -e Y_RANDOM_CLIENT=4 -e Y_TEST_CLIENT_CREATE=yes -e Y_HTTP_SHARE_CERT=yes -e Y_HTTP_PORT=8091 -e Y_HTTP_PORT_SECURE=8092 -e Y_OCSP_PORT=8093 -p 8091-8093:8091-8093 ghcr.io/palw3ey/ye3cert:latest"
 LABEL org.opencontainers.image.tip="The folder /data is persistent"
 LABEL org.opencontainers.image.premiere="20231203"
 
