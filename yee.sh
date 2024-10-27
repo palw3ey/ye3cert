@@ -147,6 +147,10 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
 	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "$vl_subj_ca" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
 
+	# publish
+ 	ln -sfn /data/ssl/cacert.pem /var/www/localhost/htdocs/cacert.pem
+	ln -sfn /data/ssl/cacert.pem $Y_HTTP_SHARE_FOLDER/cacert.pem
+
 	# ============ [ OCSP ] ============
 
 	# create ocsp key and cert
