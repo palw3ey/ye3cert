@@ -282,7 +282,7 @@ f_start_crl() {
 	mkdir /data/crontabs > /dev/null 2>&1
 	
 	# create cron file
-	echo -e "$Y_CRL_FREQUENCY       (/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl) > /dev/null 2>&1\n" > /data/crontabs/root
+	echo -e "$Y_CRL_FREQUENCY       (/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem > /dev/null 2>&1 ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl)\n" > /data/crontabs/root
 	chmod 600 /data/crontabs/root
  
 	# start service
@@ -412,14 +412,30 @@ f_crl() {
 # test certificate against OCSP server
 f_test() {
 	prefix=$1
+
+ 	# crl
+  	echo "CRL:"
+ 	vl_serial=$(openssl x509 -in /data/ssl/certs/$prefix-cert.pem -noout -serial | cut -d= -f2)
+	openssl crl -inform DER -text -in /data/ssl/certs/crl | grep "Serial Number: $vl_serial"
+
+ 	# ocsp
+  	echo "OCSP:"
 	openssl ocsp -CAfile /data/ssl/cacert.pem -issuer /data/ssl/cacert.pem -cert /data/ssl/certs/$prefix-cert.pem -url 127.0.0.1:$Y_OCSP_PORT -resp_text 
+}
+
+# test certificate against OCSP server
+f_update() {
+	prefix=$1
+ 	openssl ocsp -CAfile /data/ssl/cacert.pem -issuer /data/ssl/cacert.pem -cert /data/ssl/certs/$prefix-cert.pem -url 127.0.0.1:$Y_OCSP_PORT -resp_text > /dev/null 2>&1
+	/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem > /dev/null 2>&1 ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl
 }
 
 # revoke a certificate
 f_revoke() {
 	prefix=$1
 	openssl ca -config /data/ssl/openssl.cnf -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -revoke /data/ssl/certs/$prefix-cert.pem
-}
+ 	f_update $1
+ }
 
 # display ca
 f_ca() {
