@@ -54,7 +54,7 @@ f_init() {
 	if [[ -z "$Y_IP" ]]; then
 
 		# get external ip
-		if [[ $Y_IP_CHECK_PUBLIC == "yes" ]] ; then
+		if [[ $Y_IP_USE_PUBLIC == "yes" ]] ; then
 			vl_ip_public=$(curl -m $Y_IP_CHECK_URL_TIMEOUT -s $Y_IP_CHECK_URL)
 		else 
 			vl_ip_public=""
