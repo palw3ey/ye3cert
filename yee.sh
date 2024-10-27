@@ -194,7 +194,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
  	# create random client key and cert
 
    	if [[ ! -z "$Y_RANDOM_CLIENT" ]]; then
- 		f_add_random $Y_RANDOM_CLIENT $Y_RANDOM_CLIENT_REVO $Y_RANDOM_CLIENT_DAYS $Y_RANDOM_CLIENT_CREDS_EXPORT $Y_RANDOM_CLIENT_CREDS_LOG
+ 		f_add_random $Y_RANDOM_CLIENT $Y_RANDOM_CLIENT_REVO $Y_RANDOM_CLIENT_DAYS
    	fi
 	
 	# ============ [ finalization ] ============
@@ -333,9 +333,15 @@ f_add() {
 
 	openssl ca -config /data/ssl/openssl.cnf -policy policy_anything -extensions $usr_cert -days $days -batch -notext -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/certs/$prefix-cert.pem -infiles /data/ssl/csr/$prefix-req.pem > /dev/null 2>&1
 	
-	# export
+	# export to other format
 	
 	f_export $prefix $password
+
+ 	# show and export credentials
+  
+  	vl_cred="$prefix $password"
+  	echo "CRED : $vl_cred"
+	echo "$vl_cred" >> $Y_CRED_EXPORT
 	
 }
 
@@ -356,18 +362,6 @@ function f_add_random(){
  	else
  		vl_days=$3
  	fi
-  
-	if [[ -z "$4" ]] || [[ "$4" == "-" ]] ; then
- 		vl_export=$Y_RANDOM_CLIENT_CREDS_EXPORT
- 	else
- 		vl_export=$4
- 	fi
-
-  	if [[ -z "$5" ]] || [[ "$5" == "-" ]] ; then
- 		vl_log=$Y_RANDOM_CLIENT_CREDS_LOG
- 	else
- 		vl_log=$5
- 	fi
  
 	for i in $(seq $vl_count)
 	do
@@ -375,14 +369,6 @@ function f_add_random(){
  		vl_user=$(tr -dc $vg_username_char </dev/urandom | head -c $vg_username_length; echo)
    		vl_password=$(tr -dc $vg_password_char </dev/urandom | head -c $vg_password_length; echo)
 		vl_result="$vl_user $vl_password"
-
-  		# export credentials
-  		echo $vl_result >> $vl_export
-
-    		# show credentials
-		if [[ $vl_log == "yes" ]]; then 
-			echo "CRED : $vl_result"
-		fi
 
    		# create certificate
 		f_add $vl_user $vl_user $vl_password $vl_revo $vl_days
@@ -486,8 +472,6 @@ f_arg() {
 revo="-"
 days="-"
 san="-"
-export="-"
-log="-"
 
 # get argument
 while [ $# -gt 0 ]; do
@@ -515,12 +499,6 @@ while [ $# -gt 0 ]; do
 			;;
 		--count=*|-c=*)
 			count="${1#*=}"
-			;;
-		--export=*|-e=*)
-			export="${1#*=}"
-			;;
-		--log=*|-l=*)
-			log="${1#*=}"
 			;;
 		--tz=*|-t=*)
 			tz="${1#*=}"
@@ -551,7 +529,7 @@ case "$action" in
 	;;
  	"random")
 		if [[ ! -z "$count" ]]; then
-   			f_add_random $count $revo $days $export $log
+   			f_add_random $count $revo $days
 		else 
 			f_arg
 		fi
