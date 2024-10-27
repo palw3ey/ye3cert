@@ -43,6 +43,11 @@ certutil -URL http://IP:8091/crl
 certutil -f –urlfetch -verify "C:\Users\USERNAME\Downloads\tux1-cert.pem"
 ```
 
+- Import p12 on Windows
+```cmd
+certutil -f -user -enterprise -p 1234 -importpfx "%USERPROFILE%\Downloads\tux1-cert.p12"
+```
+
 - Show a base64 certificate in the terminal, eg: tux1 :
 ```bash
 docker exec -it mycert yee --action=pem --prefix=tux1
