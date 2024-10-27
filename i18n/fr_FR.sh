@@ -18,7 +18,7 @@ i_HELP="
                    le dossier /data/ssl dans /data/backup/YYYYmmddHHMMSS
                    Tous les services seront redémarrés
   add            : Créer un certificat (ARG: prefix cn password revo[opt] days[opt] san[opt])
-  random         : Create random certificates (ARG: count revo[opt] days[opt] export[opt] log[opt])
+  random         : Create random certificates (ARG: count revo[opt] days[opt])
   crl            : Afficher la CRL
   test           : Vérifier un certificat via le service OCSP (ARG: prefix)
   revoke         : Révoquer un certificat (ARG: prefix)
@@ -46,8 +46,6 @@ i_HELP="
 --days=entier    : Durée de validité du certificat 
 --san=text       : Inclure le SAN (ex: DNS.1:laptop1.test.lan)
 --count=integer  : Nombre de certificats aléatoires à créer
---export=file    : Le fichier d'exportation contenant les informations d'identification
---log=yes/no     : Afficher les informations d'identification
 --tz=text        : Fuseau horaire  (ex: Europe/Paris)
 
 Exemple :
