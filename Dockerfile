@@ -37,7 +37,7 @@ ENV TZ=Europe/Paris \
 	\
 	# crl, frequency is in seconde
 	Y_CRL=yes \
-	Y_CRL_FREQUENCY=15 \
+	Y_CRL_FREQUENCY=60 \
 	\
 	# ocsp
 	Y_OCSP=yes \
