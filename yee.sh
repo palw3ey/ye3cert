@@ -148,9 +148,10 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 	openssl req -config /data/ssl/openssl.cnf -new -x509 -nodes -extensions v3_ca -subj "$vl_subj_ca" -days $Y_DAYS -key /data/ssl/private/cakey.pem -passin pass:$Y_CA_PASS -out /data/ssl/cacert.pem
 
 	# publish
- 	ln -sfn /data/ssl/cacert.pem /var/www/localhost/htdocs/cacert.pem
-	ln -sfn /data/ssl/cacert.pem $Y_HTTP_SHARE_FOLDER/cacert.pem
-
+ 	openssl x509 -outform der -in /data/ssl/cacert.pem -out /data/ssl/cacert.crt
+ 	ln -sfn /data/ssl/cacert.crt /var/www/localhost/htdocs/cacert.crt
+	ln -sfn /data/ssl/cacert.crt $Y_HTTP_SHARE_FOLDER/cacert.crt
+ 
 	# ============ [ OCSP ] ============
 
 	# create ocsp key and cert
@@ -323,7 +324,11 @@ f_export() {
 
 	prefix=$1
 	password=$2
-	
+
+	# export to crt
+ 
+	 openssl x509 -outform der -in /data/ssl/certs/$prefix-cert.pem -out /data/ssl/certs/$prefix-cert.crt
+ 
 	# export to p12
 
 	openssl pkcs12 -in /data/ssl/certs/$prefix-cert.pem -inkey /data/ssl/private/$prefix-key.pem -certfile /data/ssl/cacert.pem -export -out /data/ssl/certs/$prefix-cert.p12 -passout pass:$password 
@@ -334,9 +339,9 @@ f_export() {
 	openssl pkcs12 -legacy -in /data/ssl/certs/$prefix-cert.pem -inkey /data/ssl/private/$prefix-key.pem -certfile /data/ssl/cacert.pem -export -out /data/ssl/certs/$prefix-cert-legacy.p12 -passout pass:$password
 	chmod 644 /data/ssl/certs/$prefix-cert-legacy.p12
 	
-	# export p12 legacy to pem
+	# export to p12 legacy pem
 
-	openssl base64 -in /data/ssl/certs/$prefix-cert-legacy.p12 -out /data/ssl/certs/$prefix-cert-legacy.pem
+	openssl base64 -in /data/ssl/certs/$prefix-cert-legacy.p12 -out /data/ssl/certs/$prefix-cert-legacy.p12.pem
 	
 }
 
