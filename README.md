@@ -29,17 +29,17 @@ docker logs mycert
 
 - Check CRL and OCSP on Windows
 ```cmd
-# download the CA
+:: download the CA
 curl -o %USERPROFILE%\Downloads\cacert.crt http://IP:8091/cacert.crt
 
-# import the CA
+:: import the CA
 explorer %USERPROFILE%\Downloads\cacert.crt
-# or in admin : certutil -f -addstore CA %USERPROFILE%\Downloads\cacert.crt
+:: or in admin : certutil -f -addstore CA %USERPROFILE%\Downloads\cacert.crt
 
-# GUI, click "Retrieve"
+:: GUI, click "Retrieve"
 certutil -URL http://IP:8091/crl
 
-# CLI, should display at the end : "Leaf certificate revocation check passed"
+:: CLI, should display at the end : "Leaf certificate revocation check passed"
 certutil -f –urlfetch -verify "C:\Users\USERNAME\Downloads\tux1-cert.pem"
 ```
 
