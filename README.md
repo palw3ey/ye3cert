@@ -42,7 +42,14 @@ certutil -URL http://IP:8091/crl
 :: CLI, should display at the end : "Leaf certificate revocation check passed"
 certutil -f –urlfetch -verify "%USERPROFILE%\Downloads\tux1-cert.crt"
 
+:: View CRL and OCSP cache
+certutil -urlcache *
+
+:: Clear CRL and OCSP cache
+certutil -urlcache * delete
+
 :: Check errors in Windows Event Viewer : Custom > Administrative Events
+
 ```
 
 - Import p12 on Windows
