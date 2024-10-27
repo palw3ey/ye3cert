@@ -47,6 +47,8 @@
 # export Y_RANDOM_CLIENT=
 # export Y_RANDOM_CLIENT_REVO=yes
 # export Y_RANDOM_CLIENT_DAYS=731
+# export Y_RANDOM_CLIENT_CREDS_EXPORT=/data/ssl/CREDS_RANDOM
+# export Y_RANDOM_CLIENT_CREDS_LOG=yes
 
 ## test client
 # export Y_TEST_CLIENT_CREATE=no
