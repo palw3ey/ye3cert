@@ -46,7 +46,7 @@
 ## random client
 # export Y_RANDOM_CLIENT=
 # export Y_RANDOM_CLIENT_REVO=yes
-# export Y_RANDOM_CLIENT_DAYS=31
+# export Y_RANDOM_CLIENT_DAYS=731
 
 ## test client
 # export Y_TEST_CLIENT_CREATE=no
