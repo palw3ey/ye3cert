@@ -36,9 +36,9 @@ ENV TZ=Europe/Paris \
 	Y_HTTP_PORT=80 \
 	Y_HTTP_PORT_SECURE=443 \
 	\
-	# crl, frequency is in seconde
+	# crl
 	Y_CRL=yes \
-	Y_CRL_FREQUENCY=60 \
+	Y_CRL_FREQUENCY="*/15       *       *       *       *" \
 	\
 	# ocsp
 	Y_OCSP=yes \
