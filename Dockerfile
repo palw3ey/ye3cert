@@ -39,7 +39,7 @@ ENV TZ=Europe/Paris \
 	# crl
 	Y_CRL=yes \
 	Y_CRL_CROND="*/15       *       *       *       *" \
- 	Y_CRL_SEC_NEXT=300 \
+ 	Y_CRL_SEC_NEXT=2678400 \
 	\
 	# ocsp
 	Y_OCSP=yes \
