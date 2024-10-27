@@ -47,6 +47,7 @@ certutil -urlcache *
 
 :: Clear CRL and OCSP cache
 certutil -urlcache * delete
+certutil -setreg chain\ChainCacheResyncFiletime @now
 
 :: Check errors in Windows Event Viewer : Custom > Administrative Events
 
