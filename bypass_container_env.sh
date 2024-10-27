@@ -6,7 +6,7 @@
 # export Y_LANGUAGE=fr_FR
 # export Y_DEBUG=no
 # export Y_IP=
-# export Y_IP_CHECK_PUBLIC=no
+# export Y_IP_USE_PUBLIC=no
 # export Y_IP_CHECK_URL=http://whatismyip.akamai.com
 # export Y_IP_CHECK_URL_TIMEOUT=5
 
