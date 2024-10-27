@@ -193,7 +193,7 @@ authorityInfoAccess = OCSP;URI:http://$Y_IP:$Y_OCSP_PORT
 
  	# create random client key and cert
 
-   	if [[ -z "$Y_RANDOM_CLIENT" ]]; then
+   	if [[ ! -z "$Y_RANDOM_CLIENT" ]]; then
  		f_add_random $Y_RANDOM_CLIENT $Y_RANDOM_CLIENT_REVO $Y_RANDOM_CLIENT_DAYS $Y_RANDOM_CLIENT_CREDS_EXPORT $Y_RANDOM_CLIENT_CREDS_LOG
    	fi
 	
@@ -372,7 +372,7 @@ function f_add_random(){
 	for i in $(seq $vl_count)
 	do
  		# generate credentials
- 		vl_user=$(tr -dc $vg_username_char </dev/urandom | head -c $vg_username_char; echo)
+ 		vl_user=$(tr -dc $vg_username_char </dev/urandom | head -c $vg_username_length; echo)
    		vl_password=$(tr -dc $vg_password_char </dev/urandom | head -c $vg_password_length; echo)
 		vl_result="$vl_user : $vl_password"
 
