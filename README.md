@@ -34,7 +34,7 @@ curl -o %USERPROFILE%\Downloads\cacert.crt http://IP:8091/cacert.crt
 
 :: import the CA
 explorer %USERPROFILE%\Downloads\cacert.crt
-:: or in admin : certutil -f -addstore CA %USERPROFILE%\Downloads\cacert.crt
+:: or in admin : certutil -f -addstore root %USERPROFILE%\Downloads\cacert.crt
 
 :: GUI, click "Retrieve"
 certutil -URL http://IP:8091/crl
