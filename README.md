@@ -25,6 +25,8 @@ docker logs mycert
 # the certificate files will be displayed, and available for download.
 
 # verify certificate on Windows
+# download and import the CA: http://IP/cacert.crt
+certutil -URL http://IP:8091/crl
 certutil -f –urlfetch -verify "C:\Users\user\Downloads\tux1-cert.pem
 ```
 
