@@ -21,16 +21,18 @@ docker exec -it mycert yee
 # Show the log :
 docker logs mycert
 
-# Get the ip adress and open a web browser
+# Get the ip adress and open a web browser : http://IP:8091 or https://IP:8092
 # the certificate files will be displayed, and available for download.
-
-# verify certificate on Windows
-# download and import the CA: http://IP/cacert.crt
-certutil -URL http://IP:8091/crl
-certutil -f –urlfetch -verify "C:\Users\user\Downloads\tux1-cert.pem
 ```
 
 # HOWTOs
+
+- Check CRL and OCSP on Windows
+```bash
+# download and import the CA: http://IP/cacert.crt
+certutil -URL http://IP:8091/crl
+certutil -f –urlfetch -verify "C:\Users\USERNAME\Downloads\tux1-cert.pem"
+```
 
 - Show a base64 certificate in the terminal, eg: tux1 :
 ```bash
