@@ -23,6 +23,9 @@ docker logs mycert
 
 # Get the ip adress and open a web browser
 # the certificate files will be displayed, and available for download.
+
+# verify certificate on Windows
+certutil -f –urlfetch -verify "C:\Users\user\Downloads\tux1-cert.pem
 ```
 
 # HOWTOs
