@@ -49,15 +49,15 @@ f_init() {
 	
 	# ============ [ preparation ] ============
 	
-	# if env variable Y_IP doesn't exist, then set to external ip or default route interface ip or first hostname ip
+	# if env variable Y_IP doesn't exist, then set to public ip or default route interface ip or first hostname ip
 		
 	if [[ -z "$Y_IP" ]]; then
 
 		# get external ip
 		if [[ $Y_IP_CHECK_PUBLIC == "yes" ]] ; then
-			vl_ip_external=$(curl -m $Y_IP_CHECK_URL_TIMEOUT -s $Y_IP_CHECK_URL)
+			vl_ip_public=$(curl -m $Y_IP_CHECK_URL_TIMEOUT -s $Y_IP_CHECK_URL)
 		else 
-			vl_ip_external=""
+			vl_ip_public=""
 		fi
 		
 		# get default interface ip
@@ -65,8 +65,8 @@ f_init() {
 		vl_interface_ip=$(/sbin/ifconfig $vl_interface | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 	
 		# choose
-		if expr "$vl_ip_external" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
-			Y_IP=$vl_ip_external
+		if expr "$vl_ip_public" : '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null; then
+			Y_IP=$vl_ip_public
 		elif [[ ! -z "vl_interface_ip" ]]; then
 			Y_IP=$vl_interface_ip
 		else
