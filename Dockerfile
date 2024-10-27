@@ -24,9 +24,9 @@ ENV TZ=Europe/Paris \
 	Y_LANGUAGE=fr_FR \
 	Y_DEBUG=no \
 	Y_IP= \
-	Y_IP_CHECK_EXTERNAL=yes \
-	Y_URL_IP_CHECK=http://whatismyip.akamai.com \
-  	Y_URL_IP_CHECK_TIMEOUT=5 \
+	Y_IP_CHECK_PUBLIC=no \
+	Y_IP_CHECK_URL=http://whatismyip.akamai.com \
+  	Y_IP_CHECK_URL_TIMEOUT=5 \
 	\
 	# http
 	Y_HTTP=yes \
@@ -35,7 +35,7 @@ ENV TZ=Europe/Paris \
 	Y_HTTP_PORT=80 \
 	Y_HTTP_PORT_SECURE=443 \
 	\
-	# crl, frenquency is in seconde
+	# crl, frequency is in seconde
 	Y_CRL=yes \
 	Y_CRL_FREQUENCY=15 \
 	\
@@ -60,6 +60,13 @@ ENV TZ=Europe/Paris \
 	Y_ORGANIZATION_NAME=Test \
 	Y_ORGANIZATIONAL_UNIT_NAME=Web \
 	Y_EMAIL_ADDRESS=webmaster@test.lan \
+	\
+	 # random client
+	Y_RANDOM_CLIENT= \
+	Y_RANDOM_CLIENT_REVO=yes \
+	Y_RANDOM_CLIENT_DAYS=731 \
+	Y_RANDOM_CLIENT_CREDS_EXPORT=/data/ssl/CREDS_RANDOM \
+	Y_RANDOM_CLIENT_CREDS_LOG=yes \
 	\
 	# test client
 	Y_TEST_CLIENT_CREATE=no \
