@@ -17,7 +17,7 @@
 # export Y_HTTP_PORT=80
 # export Y_HTTP_PORT_SECURE=443
 
-## crl, frenquency is in seconde
+## crl, frequency is in seconde
 # export Y_CRL=yes
 # export Y_CRL_FREQUENCY=15
 
