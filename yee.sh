@@ -276,13 +276,13 @@ f_stop_crl() {
 f_start_crl() {
 
 	# initial crl
-	(/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl ; ln -sfn /data/ssl/certs/crl /var/www/localhost/htdocs/crl ; ln -sfn /data/ssl/certs/crl $Y_HTTP_SHARE_FOLDER/crl ) > /dev/null 2>&1
+	(/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -crlsec $Y_CRL_SEC_NEXT -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl ; ln -sfn /data/ssl/certs/crl /var/www/localhost/htdocs/crl ; ln -sfn /data/ssl/certs/crl $Y_HTTP_SHARE_FOLDER/crl ) > /dev/null 2>&1
 	
 	# create cron folder
 	mkdir /data/crontabs > /dev/null 2>&1
 	
 	# create cron file
-	echo -e "$Y_CRL_FREQUENCY       (/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem > /dev/null 2>&1 ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl)\n" > /data/crontabs/root
+	echo -e "$Y_CRL_CROND       (/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -crlsec $Y_CRL_SEC_NEXT -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem > /dev/null 2>&1 ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl)\n" > /data/crontabs/root
 	chmod 600 /data/crontabs/root
  
 	# start service
@@ -427,7 +427,7 @@ f_test() {
 f_update() {
 	prefix=$1
  	openssl ocsp -CAfile /data/ssl/cacert.pem -issuer /data/ssl/cacert.pem -cert /data/ssl/certs/$prefix-cert.pem -url 127.0.0.1:$Y_OCSP_PORT -resp_text > /dev/null 2>&1
-	/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem > /dev/null 2>&1 ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl
+	/usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -crlsec $Y_CRL_SEC_NEXT -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem > /dev/null 2>&1 ; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl
 }
 
 # revoke a certificate
