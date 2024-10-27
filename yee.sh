@@ -426,7 +426,10 @@ f_test() {
 # test certificate against OCSP server
 f_update() {
 	prefix=$1
- 	openssl ocsp -CAfile /data/ssl/cacert.pem -issuer /data/ssl/cacert.pem -cert /data/ssl/certs/$prefix-cert.pem -url 127.0.0.1:$Y_OCSP_PORT -resp_text > /dev/null 2>&1
+ 	# crl
+ 	openssl ca -config /data/ssl/openssl.cnf -gencrl -crlsec $Y_CRL_SEC_NEXT -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem > /dev/null 2>&1 ; openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl
+ 	# ocsp
+  	openssl ocsp -CAfile /data/ssl/cacert.pem -issuer /data/ssl/cacert.pem -cert /data/ssl/certs/$prefix-cert.pem -url 127.0.0.1:$Y_OCSP_PORT -resp_text > /dev/null 2>&1
 }
 
 # revoke a certificate
