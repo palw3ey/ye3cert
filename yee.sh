@@ -282,8 +282,9 @@ f_start_crl() {
 	mkdir /data/crontabs > /dev/null 2>&1
 	
 	# create cron file
-	echo "$Y_CRL_FREQUENCY       *       *       *       *       (/bin/sh /usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; sleep 10; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl) > /dev/null 2>&1 &" > /data/crontabs/root
-	
+	echo -e "$Y_CRL_FREQUENCY       *       *       *       *       (/bin/sh /usr/bin/openssl ca -config /data/ssl/openssl.cnf -gencrl -keyfile /data/ssl/private/cakey.pem -cert /data/ssl/cacert.pem -passin pass:$Y_CA_PASS -out /data/ssl/crl.pem ; sleep 10; /usr/bin/openssl crl -inform PEM -in /data/ssl/crl.pem -outform DER -out /data/ssl/certs/crl) > /dev/null 2>&1 &\n" > /data/crontabs/root
+	chmod 600 /data/crontabs/root
+ 
 	# start service
 	crond -c /data/crontabs > /dev/null 2>&1 & 
 }
