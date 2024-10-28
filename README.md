@@ -131,7 +131,7 @@ These are the env variables and their default values.
 |Y_KEY_USAGE | text | "nonRepudiation, digitalSignature, keyEncipherment" | Key usage for a client certificate |
 |Y_EXTENDED_KEY_USAGE | text | "serverAuth, clientAuth" | Extended key usage for a client certificate |
 |Y_CA_PASS | password | ca | The password to use for the ca key |
-|Y_DNS | url address | ye3cert.test.lan | The server address |
+|Y_DNS | url address | *if not set, will use the external domain, or hostname* | The server domain address |
 |Y_CN | text | *if not set, will use Y_IP* | The server common name |
 |Y_COUNTRY_NAME | Two letter country code | FR | The server country name, 2 letter code |
 |Y_STATE_OR_PROVINCE_NAME | text | Ile-de-France | The server state or province name |
