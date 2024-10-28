@@ -111,32 +111,44 @@ These are the env variables and their default values.
 |Y_LANGUAGE | text | fr_FR | Language. The list is in the folder /i18n/ |
 |Y_DEBUG | yes/no | no | yes, to show more messages |
 |Y_IP | IP address | *if not set, will attempt to detect and use the public ip address otherwise the first local ip address* | Server IP address |
-|Y_IP_CHECK_EXTERNAL | yes/no | yes | yes, to retrieve the public IP |
-|Y_URL_IP_CHECK | url | http://whatismyip.akamai.com | Url that curl will use to retrieve the public IP |
-|Y_URL_IP_CHECK_TIMEOUT | integer | 5 | this is the -m option in curl : Maximum time allowed, in second |
+|Y_IP_CHECK_PUBLIC | yes/no | no | yes, to retrieve the public IP |
+|Y_IP_CHECK_URL | url | http://whatismyip.akamai.com | Url that curl will use to retrieve the public IP |
+|Y_IP_CHECK_URL_TIMEOUT | integer | 5 | this is the -m option in curl : Maximum time allowed, in second |
+|Y_CRED_EXPORT | path | /data/ssl/cred | path to the file where the certificate passwords are saved |
 |Y_HTTP | yes/no | yes | yes, enable http/https server |
 |Y_HTTP_SHARE_CERT | yes/no | no | yes, to show certs files in the http server directory listing |
 |Y_HTTP_SHARE_FOLDER | folder path | /data/ssl/www | http server directory listing path |
 |Y_HTTP_PORT | port number | 80 | http port |
 |Y_HTTP_PORT_SECURE | port number | 443 | https port |
 |Y_CRL | yes/no | yes | yes, to enable CRL update service |
-|Y_CRL_FREQUENCY | number of second | 15 | CRL update frequency |
+|Y_CRL_CROND | text | "*/15       *       *       *       *" | scheduling, with crontab syntax |
+|Y_CRL_SEC_NEXT | integer | 2678400 | openssl-ca -crlsec parameter : The number of seconds before the next CRL is due |
 |Y_OCSP | yes/no | yes | yes, to enable OCSP service |
 |Y_OCSP_PORT | port number | 8080 | OCSP port |
-|Y_DAYS | number | 3650 | How long to certify for |
-|Y_DNS | url address | ye3cert.test.lan | The server address |
-|Y_CN | text | *if not set, will use Y_IP* | The server common name |
-|Y_ORGANIZATION_NAME | text | Test | The server Organization Name |
-|Y_EMAIL_ADDRESS | email address | webmaster@test.lan | The server email address |
-|Y_COUNTRY_NAME | Two letter country code | FR | The server country name, 2 letter code |
-|Y_STATE_OR_PROVINCE_NAME | text | Ile-de-France | The server state or province name |
-|Y_LOCALITY_NAME | text | Paris | The server locality name |
-|Y_ORGANIZATIONAL_UNIT_NAME | text | Web | The server organizational unit name |
+|Y_KEY_SIZE | integer | 2048 | private key size |
+|Y_DAYS | number | 3650 | CA, How long to certify for |
+|Y_DAYS_CLIENT | number | 365 | Client, how long to certify for |
 |Y_KEY_USAGE | text | "nonRepudiation, digitalSignature, keyEncipherment" | Key usage for a client certificate |
 |Y_EXTENDED_KEY_USAGE | text | "serverAuth, clientAuth" | Extended key usage for a client certificate |
 |Y_CA_PASS | password | ca | The password to use for the ca key |
-|Y_KEY_SIZE | integer | 2048 | private key size |
-|Y_CREATE_TEST_CLIENT | yes/no | no | yes, to create a test client *(prefix: tux1, password: 1234)* |
+|Y_DNS | url address | ye3cert.test.lan | The server address |
+|Y_CN | text | *if not set, will use Y_IP* | The server common name |
+|Y_COUNTRY_NAME | Two letter country code | FR | The server country name, 2 letter code |
+|Y_STATE_OR_PROVINCE_NAME | text | Ile-de-France | The server state or province name |
+|Y_LOCALITY_NAME | text | Paris | The server locality name |
+|Y_ORGANIZATION_NAME | text | Test | The server Organization Name |
+|Y_ORGANIZATIONAL_UNIT_NAME | text | Web | The server organizational unit name |
+|Y_EMAIL_ADDRESS | email address | webmaster@test.lan | The server email address |
+|Y_RANDOM_CLIENT | integer | | Number of random client to create |
+|Y_RANDOM_CLIENT_REVO | yes/no | yes | Random client, yes, to include the revocation URL in the certificate|
+|Y_RANDOM_CLIENT_DAYS | integer | 731 | Random client, How long to certify for |
+|Y_TEST_CLIENT_CREATE | yes/no | no | Test client, yes, to create a test client |
+|Y_TEST_CLIENT_PREFIX | filename | tux1 | Test client, filename prefix, result: *(prefix-cert.pem)* |
+|Y_TEST_CLIENT_CN | text | pc1.test.lan | Test client, CN for the client certificate |
+|Y_TEST_CLIENT_PASSWORD | password | 1234 | Test client, password of the p12 file |
+|Y_TEST_CLIENT_REVO | yes/no | yes | Test client, yes, to include the revocation URL in the certificate |
+|Y_TEST_CLIENT_DAYS | integer | 31 | Test client, How long to certify for |
+|Y_TEST_CLIENT_SAN | text | DNS.1:pc1.my.net,IP.1:192.168.1.10 | Test client, san (Subject Alternative Name) |
 
 # Compatibility
 
