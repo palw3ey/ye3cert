@@ -8,7 +8,7 @@ The /data folder is persistent.
 
 ```bash
 docker run -dt --name mycert \
-  -e TZ=America/Cayenne -e Y_TEST_CLIENT_CREATE=yes -e Y_HTTP_SHARE_CERT=yes \
+  -e TZ=America/Cayenne -e Y_IP_CHECK_PUBLIC=yes -e Y_TEST_CLIENT_CREATE=yes -e Y_HTTP_SHARE_CERT=yes \
   -e Y_HTTP_PORT=8091 -e Y_HTTP_PORT_SECURE=8092 -e Y_OCSP_PORT=8093 -p 8091-8093:8091-8093 \
   ghcr.io/palw3ey/ye3cert:latest
 ```
@@ -88,13 +88,11 @@ yee --action=add \
 - Use your host Let's Encrypt certificates for HTTPS on 8443 port
 ```bash
 docker run -dt --name mycert \
-  -e TZ=America/Montreal \
-  -e Y_HTTP_SHARE_CERT=yes \
-  -e Y_HTTP_PORT_SECURE=8443
-  -p 8443:8443 \
+  -e TZ=America/Montreal -e Y_IP_CHECK_PUBLIC=yes -e Y_HTTP_SHARE_CERT=yes \
+  -e Y_HTTP_PORT_SECURE=8443 -p 8443:8443 \
   -v /etc/letsencrypt/live/{YOUR_DOMAIN}/fullchain.pem:/data/fullchain.pem \
   -v /etc/letsencrypt/live/{YOUR_DOMAIN}/privkey.pem:/data/privkey.pem \
-  palw3ey/ye3cert
+  ghcr.io/palw3ey/ye3cert:latest
 ```
 
 # GNS3
