@@ -121,7 +121,7 @@ These are the env variables and their default values.
 |Y_HTTP_PORT | port number | 80 | http port |
 |Y_HTTP_PORT_SECURE | port number | 443 | https port |
 |Y_CRL | yes/no | yes | yes, to enable CRL update service |
-|Y_CRL_CROND | text | "*/15       *       *       *       *" | scheduling, with crontab syntax |
+|Y_CRL_CROND | text | */15       *       *       *       * | scheduling, with crontab syntax |
 |Y_CRL_SEC_NEXT | integer | 2678400 | openssl-ca -crlsec parameter : The number of seconds before the next CRL is due |
 |Y_OCSP | yes/no | yes | yes, to enable OCSP service |
 |Y_OCSP_PORT | port number | 8080 | OCSP port |
