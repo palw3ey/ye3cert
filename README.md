@@ -177,7 +177,7 @@ docker run -dt --name my_customized_cert ye3cert
 # Documentation
 
 [OpenSSL man page](https://linux.die.net/man/1/openssl)  
-[openSSL-ca man page](https://docs.openssl.org/3.0/man1/openssl-ca/#options)
+[openSSL-ca man page](https://docs.openssl.org/3.0/man1/openssl-ca/#options)  
 [lighttpd man page](https://linux.die.net/man/8/lighttpd)
 
 
